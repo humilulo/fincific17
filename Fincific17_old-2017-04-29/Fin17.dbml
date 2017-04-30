@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="FinDev3" Class="Fin17DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DROMA\SQL2014EXP;Initial Catalog=FinDev3;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="FinDev3ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tbFinCard" Member="tbFinCards">
+    <Type Name="tbFinCard">
+      <Column Name="FinKey" Type="System.String" DbType="NVarChar(12) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FinNameEN" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="tbFinCard_tbFinCardPrefix" Member="tbFinCardPrefixes" ThisKey="FinKey" OtherKey="FinKey" Type="tbFinCardPrefix" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbFinCardPrefix" Member="tbFinCardPrefixes">
+    <Type Name="tbFinCardPrefix">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FinKey" Type="System.String" DbType="NVarChar(12) NOT NULL" CanBeNull="false" />
+      <Column Name="MinPrefix" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MaxPrefix" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MinDigitLen" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="MaxDigitLen" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="WhenStart" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="WhenEnd" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ValidationAlgorithm" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Association Name="tbFinCard_tbFinCardPrefix" Member="tbFinCard" ThisKey="FinKey" OtherKey="FinKey" Type="tbFinCard" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
