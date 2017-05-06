@@ -561,7 +561,7 @@ GO
 SET ANSI_PADDING ON
 GO
 CREATE TABLE [dbo].[Account](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ProfileID] [int] NOT NULL,
 	[Number]  AS (CONVERT([bigint],[dbo].[fnModifyTextWithCharsToKeep]([NumStr],'0123456789'),(0))),
 	[NumStr] [varchar](36) NOT NULL,
@@ -577,7 +577,7 @@ CREATE TABLE [dbo].[Account](
 	[NextRentDate] [date] NULL,
  CONSTRAINT [PK_Account] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -683,7 +683,7 @@ GO
 SET ANSI_PADDING ON
 GO
 CREATE TABLE [dbo].[Currency](
-	[ID] [varchar](12) NOT NULL,
+	[Id] [varchar](12) NOT NULL,
 	[NameEN] [nvarchar](50) NOT NULL,
 	[MassTroyOz] [decimal](8, 4) NULL,
 	[AgPerUnit] [decimal](8, 4) NULL,
@@ -692,7 +692,7 @@ CREATE TABLE [dbo].[Currency](
 	[DescripEN] [varchar](144) NULL,
  CONSTRAINT [PK_Currency] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -705,13 +705,13 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[LogBackup](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[WhenUTC] [smalldatetime] NOT NULL,
 	[WhenLocal] [smalldatetime] NOT NULL,
 	[FileName] [nvarchar](144) NOT NULL,
  CONSTRAINT [PK_LogBackup] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -745,7 +745,7 @@ GO
 SET ANSI_PADDING ON
 GO
 CREATE TABLE [dbo].[MarketPrice](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[MetalCode] [varchar](2) NOT NULL,
 	[MarketCode] [varchar](12) NOT NULL,
 	[WhenUTC] [datetime] NOT NULL,
@@ -754,7 +754,7 @@ CREATE TABLE [dbo].[MarketPrice](
 	[PriceGBP] [smallmoney] NULL,
  CONSTRAINT [PK_MarketPrice] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -767,23 +767,21 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Profile](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[AspNetUserId] [nvarchar](128) NOT NULL,
 	[UserName] [nvarchar](50) NOT NULL,
 	[PassWord] [nvarchar](50) NULL,
 	[DeactivationDateUTC] [smalldatetime] NULL,
 	[IsActive] [bit] NOT NULL,
-	[Dev_UserName] [nvarchar](50) NULL,
-	[Dev_UseInDev] [bit] NOT NULL,
 	[AccountNumRoot] [bigint] NULL,
 	[AccountTitle] [nvarchar](50) NULL,
-	[Dev_AccountTitle] [nvarchar](50) NULL,
 	[FirstName] [nvarchar](144) NULL,
 	[LastName] [nvarchar](144) NULL,
 	[FirstNickName] [nvarchar](144) NULL,
 	[UniqueRand] [bigint] NULL,
  CONSTRAINT [PK_Profile] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -794,39 +792,39 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[SettingString](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[SettingName] [nvarchar](50) NOT NULL,
 	[SettingValue] [nvarchar](max) NOT NULL,
 	[SettingDescr] [nvarchar](max) NULL,
  CONSTRAINT [PK_SettingString] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tbFinCard]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  Table [dbo].[FinCard]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[tbFinCard](
+CREATE TABLE [dbo].[FinCard](
 	[FinKey] [nvarchar](12) NOT NULL,
 	[FinNameEN] [nvarchar](50) NOT NULL,
- CONSTRAINT [PK_tbFinCard] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_FinCard] PRIMARY KEY CLUSTERED 
 (
 	[FinKey] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tbFinCardPrefix]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  Table [dbo].[FinCardPrefix]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE TABLE [dbo].[tbFinCardPrefix](
-	[id] [int] IDENTITY(1,1) NOT NULL,
+CREATE TABLE [dbo].[FinCardPrefix](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[FinKey] [nvarchar](12) NOT NULL,
 	[MinPrefix] [nvarchar](50) NULL,
 	[MaxPrefix] [nvarchar](50) NULL,
@@ -835,9 +833,9 @@ CREATE TABLE [dbo].[tbFinCardPrefix](
 	[WhenStart] [date] NULL,
 	[WhenEnd] [date] NULL,
 	[ValidationAlgorithm] [nvarchar](12) NULL,
- CONSTRAINT [PK_tbFinCardPrefix] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_FinCardPrefix] PRIMARY KEY CLUSTERED 
 (
-	[id] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -848,7 +846,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Tran](
-	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[TranTypeID] [tinyint] NOT NULL,
 	[ToAccountID] [int] NULL,
 	[ToAmount] [decimal](38, 19) NULL,
@@ -859,7 +857,7 @@ CREATE TABLE [dbo].[Tran](
 	[Note] [nvarchar](144) NULL,
  CONSTRAINT [PK_Tran] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -870,23 +868,23 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[TranType](
-	[ID] [tinyint] NOT NULL,
+	[Id] [tinyint] NOT NULL,
 	[Name] [nvarchar](50) NOT NULL,
  CONSTRAINT [PK_TranType] PRIMARY KEY CLUSTERED 
 (
-	[ID] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 GO
-/****** Object:  View [dbo].[vwAct]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  View [dbo].[AccountView]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[vwAct]
+CREATE VIEW [dbo].[AccountView]
 AS
-SELECT	p.[ID] as ProfileID
+SELECT	p.[Id] as ProfileID
 	,	p.UserName
 	,	p.[AccountNumRoot]
 	,	p.AccountTitle as ShortAccountTitle
@@ -900,30 +898,15 @@ SELECT	p.[ID] as ProfileID
 	,	a.NextAccrualDate
 	,	a.AccrualPeriodInMonths
  FROM dbo.Profile p JOIN dbo.Account a ON p.ID = a.ProfileID
-
-
-
 GO
-/****** Object:  View [dbo].[vwFinCard]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  View [dbo].[FinCardPrefixView]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE VIEW [dbo].[vwFinCard]
+CREATE VIEW [dbo].[FinCardPrefixView]
 AS
-SELECT [FinKey]
-      ,[FinNameEN]
-  FROM [dbo].[tbFinCard]
-
-GO
-/****** Object:  View [dbo].[vwFinCardPrefix]    Script Date: 2017-04-30 09:50:42 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE VIEW [dbo].[vwFinCardPrefix]
-AS
-SELECT	p.[id]			as pID
+SELECT	p.[Id]			as pID
 	,	p.[FinKey]		as pFinKey
 	,	p.[MinPrefix]	as pMinPrefix
 	,	p.[MaxPrefix]	as pMaxPrefix
@@ -935,7 +918,7 @@ SELECT	p.[id]			as pID
 
   	,	f.[FinKey]		as fFinKey
 	,	f.[FinNameEN]	as fFinNameEN
- FROM [dbo].[tbFinCardPrefix] p join tbFinCard f on p.FinKey = f.FinKey
+ FROM [dbo].[FinCardPrefix] p join FinCard f on p.FinKey = f.FinKey
 
 GO
 ALTER TABLE [dbo].[Account] ADD  CONSTRAINT [DF_Account_Precision]  DEFAULT ((2)) FOR [Precision]
@@ -949,7 +932,7 @@ GO
 ALTER TABLE [dbo].[Profile] ADD  CONSTRAINT [DF_Profile_Dev_UseInDev]  DEFAULT ((0)) FOR [Dev_UseInDev]
 GO
 ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FK_Account_Profile] FOREIGN KEY([ProfileID])
-REFERENCES [dbo].[Profile] ([ID])
+REFERENCES [dbo].[Profile] ([Id])
 GO
 ALTER TABLE [dbo].[Account] CHECK CONSTRAINT [FK_Account_Profile]
 GO
@@ -977,23 +960,23 @@ ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[AspNetUserRoles] CHECK CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]
 GO
-ALTER TABLE [dbo].[tbFinCardPrefix]  WITH CHECK ADD  CONSTRAINT [FK_FinCardPrefix_FinCard] FOREIGN KEY([FinKey])
-REFERENCES [dbo].[tbFinCard] ([FinKey])
+ALTER TABLE [dbo].[FinCardPrefix]  WITH CHECK ADD  CONSTRAINT [FK_FinCardPrefix_FinCard] FOREIGN KEY([FinKey])
+REFERENCES [dbo].[FinCard] ([FinKey])
 GO
-ALTER TABLE [dbo].[tbFinCardPrefix] CHECK CONSTRAINT [FK_FinCardPrefix_FinCard]
+ALTER TABLE [dbo].[FinCardPrefix] CHECK CONSTRAINT [FK_FinCardPrefix_FinCard]
 GO
 ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_FromAccount] FOREIGN KEY([FromAccountID])
-REFERENCES [dbo].[Account] ([ID])
+REFERENCES [dbo].[Account] ([Id])
 GO
 ALTER TABLE [dbo].[Tran] CHECK CONSTRAINT [FK_Tran_FromAccount]
 GO
 ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_ToAccount] FOREIGN KEY([ToAccountID])
-REFERENCES [dbo].[Account] ([ID])
+REFERENCES [dbo].[Account] ([Id])
 GO
 ALTER TABLE [dbo].[Tran] CHECK CONSTRAINT [FK_Tran_ToAccount]
 GO
 ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_TranType] FOREIGN KEY([TranTypeID])
-REFERENCES [dbo].[TranType] ([ID])
+REFERENCES [dbo].[TranType] ([Id])
 GO
 ALTER TABLE [dbo].[Tran] CHECK CONSTRAINT [FK_Tran_TranType]
 GO
@@ -1005,9 +988,9 @@ ALTER TABLE [dbo].[Profile]  WITH CHECK ADD  CONSTRAINT [CK_Profile_IsActive] CH
 GO
 ALTER TABLE [dbo].[Profile] CHECK CONSTRAINT [CK_Profile_IsActive]
 GO
-ALTER TABLE [dbo].[tbFinCardPrefix]  WITH CHECK ADD  CONSTRAINT [CK_FinCardPrefix_SamePrefixLengths] CHECK  ((isnull(len([MinPrefix]),(-1))=isnull(len([MaxPrefix]),(-2))))
+ALTER TABLE [dbo].[FinCardPrefix]  WITH CHECK ADD  CONSTRAINT [CK_FinCardPrefix_SamePrefixLengths] CHECK  ((isnull(len([MinPrefix]),(-1))=isnull(len([MaxPrefix]),(-2))))
 GO
-ALTER TABLE [dbo].[tbFinCardPrefix] CHECK CONSTRAINT [CK_FinCardPrefix_SamePrefixLengths]
+ALTER TABLE [dbo].[FinCardPrefix] CHECK CONSTRAINT [CK_FinCardPrefix_SamePrefixLengths]
 GO
 /****** Object:  StoredProcedure [dbo].[AddExchangeTran]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
@@ -1350,7 +1333,7 @@ GO
 -- =============================================
 -- Author:		Edward Kovac
 -- Create date: 2016-06-24
--- Description:	Creates and sets a new UniqueRand value that does not have a match in the [tbProfile] table.
+-- Description:	Creates and sets a new UniqueRand value that does not have a match in the [Profile] table.
 -- =============================================
 CREATE PROCEDURE [dbo].[SetUniqueRandForProfile](@profileID int)
 AS
@@ -1369,7 +1352,7 @@ BEGIN
 		if (Len(@t) < 8) begin; set @t = '00'; end;
 		set @r = dbo.fnHextoInt4(Left(@t, 8), null);
 
-		-- when @r already exists in tbProfile, then set @r = 0, so loop will repeat
+		-- when @r already exists in Profile, then set @r = 0, so loop will repeat
 		select @r = 0 from [Profile] where UniqueRand = @r;
 	end;
 	update [Profile] set UniqueRand = @r where id = @profileID;
