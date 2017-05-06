@@ -39,6 +39,7 @@ ALTER TABLE [dbo].[Tran] DROP CONSTRAINT [FK_Tran_ToAccount]
 GO
 ALTER TABLE [dbo].[Tran] DROP CONSTRAINT [FK_Tran_FromAccount]
 GO
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_FinCardPrefix_FinCard]') AND parent_object_id = OBJECT_ID(N'[dbo].[tbFinCardPrefix]'))
 ALTER TABLE [dbo].[tbFinCardPrefix] DROP CONSTRAINT [FK_FinCardPrefix_FinCard]
 GO
 ALTER TABLE [dbo].[AspNetUserRoles] DROP CONSTRAINT [FK_dbo.AspNetUserRoles_dbo.AspNetUsers_UserId]
@@ -51,28 +52,37 @@ ALTER TABLE [dbo].[AspNetUserClaims] DROP CONSTRAINT [FK_dbo.AspNetUserClaims_db
 GO
 ALTER TABLE [dbo].[Account] DROP CONSTRAINT [FK_Account_Profile]
 GO
-/****** Object:  View [dbo].[vwFinCardPrefix]    Script Date: 2017-04-30 09:53:44 ******/
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vwFinCardPrefix]'))
 DROP VIEW [dbo].[vwFinCardPrefix]
 GO
-/****** Object:  View [dbo].[vwFinCard]    Script Date: 2017-04-30 09:53:44 ******/
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vwFinCard]'))
 DROP VIEW [dbo].[vwFinCard]
 GO
-/****** Object:  View [dbo].[vwAct]    Script Date: 2017-04-30 09:53:44 ******/
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[AccountView]'))
+DROP VIEW [dbo].[AccountView]
+GO
+
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vwAct]'))
 DROP VIEW [dbo].[vwAct]
 GO
-/****** Object:  Table [dbo].[TranType]    Script Date: 2017-04-30 09:53:44 ******/
+
 DROP TABLE [dbo].[TranType]
 GO
-/****** Object:  Table [dbo].[Tran]    Script Date: 2017-04-30 09:53:44 ******/
+
 DROP TABLE [dbo].[Tran]
 GO
-/****** Object:  Table [dbo].[tbFinCardPrefix]    Script Date: 2017-04-30 09:53:44 ******/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbFinCardPrefix]') AND type in (N'U'))
 DROP TABLE [dbo].[tbFinCardPrefix]
 GO
-/****** Object:  Table [dbo].[tbFinCard]    Script Date: 2017-04-30 09:53:44 ******/
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbFinCard]') AND type in (N'U'))
 DROP TABLE [dbo].[tbFinCard]
 GO
-/****** Object:  Table [dbo].[SettingString]    Script Date: 2017-04-30 09:53:44 ******/
+
 DROP TABLE [dbo].[SettingString]
 GO
 /****** Object:  Table [dbo].[Profile]    Script Date: 2017-04-30 09:53:44 ******/
