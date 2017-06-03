@@ -8,17 +8,17 @@
         <elementListCompartment Id="c7ccc805-c9ac-4631-95bc-fe29b09aa4a0" absoluteBounds="0.765, 1.46, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="91c4a02c-63ec-4328-9bdf-596d496d9a81" absoluteBounds="3.5, 1.125, 2, 2.7324039713541666">
+    <classShape Id="dd9bc249-7b51-4b3d-a125-4a3958e00b69" absoluteBounds="3.5, 1, 2, 1.7708968098958331">
       <DataClassMoniker Name="/FinancificDataContext/Profile" />
       <nestedChildShapes>
-        <elementListCompartment Id="55b7674c-4d4c-4b06-b2d7-92927d60d3da" absoluteBounds="3.515, 1.585, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="3b7cb9ed-ae9b-4a87-a018-8814a6b577ca" absoluteBounds="3.5149999999999997, 1.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 2.49120198567708); (3.5 : 2.49120198567708)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 1.88544840494792); (3.5 : 1.88544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/FinancificDataContext/AspNetUser/AspNetUser_Profile" />
       <nodes>
         <classShapeMoniker Id="8f2ae401-98a5-49ac-90a4-e4c8f59490c6" />
-        <classShapeMoniker Id="91c4a02c-63ec-4328-9bdf-596d496d9a81" />
+        <classShapeMoniker Id="dd9bc249-7b51-4b3d-a125-4a3958e00b69" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

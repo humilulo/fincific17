@@ -22,7 +22,7 @@ namespace Fincific17.Data
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="FinDev3")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="finDev4")]
 	public partial class FinancificDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -449,21 +449,11 @@ namespace Fincific17.Data
 		
 		private string _AspNetUserId;
 		
-		private System.Nullable<System.DateTime> _DeactivationDateUTC;
-		
-		private bool _IsActive;
-		
-		private System.Nullable<long> _AccountNumRoot;
-		
-		private string _AccountTitle;
-		
 		private string _FirstName;
 		
 		private string _LastName;
 		
 		private string _FirstNickName;
-		
-		private System.Nullable<long> _UniqueRand;
 		
 		private EntityRef<AspNetUser> _AspNetUser;
 		
@@ -475,22 +465,12 @@ namespace Fincific17.Data
     partial void OnIdChanged();
     partial void OnAspNetUserIdChanging(string value);
     partial void OnAspNetUserIdChanged();
-    partial void OnDeactivationDateUTCChanging(System.Nullable<System.DateTime> value);
-    partial void OnDeactivationDateUTCChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    partial void OnAccountNumRootChanging(System.Nullable<long> value);
-    partial void OnAccountNumRootChanged();
-    partial void OnAccountTitleChanging(string value);
-    partial void OnAccountTitleChanged();
     partial void OnFirstNameChanging(string value);
     partial void OnFirstNameChanged();
     partial void OnLastNameChanging(string value);
     partial void OnLastNameChanged();
     partial void OnFirstNickNameChanging(string value);
     partial void OnFirstNickNameChanged();
-    partial void OnUniqueRandChanging(System.Nullable<long> value);
-    partial void OnUniqueRandChanged();
     #endregion
 		
 		public Profile()
@@ -539,86 +519,6 @@ namespace Fincific17.Data
 					this._AspNetUserId = value;
 					this.SendPropertyChanged("AspNetUserId");
 					this.OnAspNetUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeactivationDateUTC", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> DeactivationDateUTC
-		{
-			get
-			{
-				return this._DeactivationDateUTC;
-			}
-			set
-			{
-				if ((this._DeactivationDateUTC != value))
-				{
-					this.OnDeactivationDateUTCChanging(value);
-					this.SendPropertyChanging();
-					this._DeactivationDateUTC = value;
-					this.SendPropertyChanged("DeactivationDateUTC");
-					this.OnDeactivationDateUTCChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountNumRoot", DbType="BigInt")]
-		public System.Nullable<long> AccountNumRoot
-		{
-			get
-			{
-				return this._AccountNumRoot;
-			}
-			set
-			{
-				if ((this._AccountNumRoot != value))
-				{
-					this.OnAccountNumRootChanging(value);
-					this.SendPropertyChanging();
-					this._AccountNumRoot = value;
-					this.SendPropertyChanged("AccountNumRoot");
-					this.OnAccountNumRootChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountTitle", DbType="NVarChar(50)")]
-		public string AccountTitle
-		{
-			get
-			{
-				return this._AccountTitle;
-			}
-			set
-			{
-				if ((this._AccountTitle != value))
-				{
-					this.OnAccountTitleChanging(value);
-					this.SendPropertyChanging();
-					this._AccountTitle = value;
-					this.SendPropertyChanged("AccountTitle");
-					this.OnAccountTitleChanged();
 				}
 			}
 		}
@@ -679,26 +579,6 @@ namespace Fincific17.Data
 					this._FirstNickName = value;
 					this.SendPropertyChanged("FirstNickName");
 					this.OnFirstNickNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniqueRand", DbType="BigInt")]
-		public System.Nullable<long> UniqueRand
-		{
-			get
-			{
-				return this._UniqueRand;
-			}
-			set
-			{
-				if ((this._UniqueRand != value))
-				{
-					this.OnUniqueRandChanging(value);
-					this.SendPropertyChanging();
-					this._UniqueRand = value;
-					this.SendPropertyChanged("UniqueRand");
-					this.OnUniqueRandChanged();
 				}
 			}
 		}
