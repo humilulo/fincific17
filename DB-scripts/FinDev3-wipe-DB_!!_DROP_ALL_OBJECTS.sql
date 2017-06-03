@@ -53,6 +53,10 @@ GO
 ALTER TABLE [dbo].[Account] DROP CONSTRAINT [FK_Account_Profile]
 GO
 
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[FinCardPrefixView]'))
+DROP VIEW [dbo].[FinCardPrefixView]
+GO
+
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vwFinCardPrefix]'))
 DROP VIEW [dbo].[vwFinCardPrefix]
 GO
@@ -75,12 +79,17 @@ GO
 DROP TABLE [dbo].[Tran]
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbFinCard]') AND type in (N'U'))
+DROP TABLE [dbo].[tbFinCard]
+GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbFinCardPrefix]') AND type in (N'U'))
 DROP TABLE [dbo].[tbFinCardPrefix]
 GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbFinCard]') AND type in (N'U'))
-DROP TABLE [dbo].[tbFinCard]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[FinCardPrefix]') AND type in (N'U'))
+DROP TABLE [dbo].[FinCardPrefix]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[FinCard]') AND type in (N'U'))
+DROP TABLE [dbo].[FinCard]
 GO
 
 DROP TABLE [dbo].[SettingString]
@@ -122,10 +131,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[__MigrationHistory]') AND type in (N'U'))
 DROP TABLE [dbo].[__MigrationHistory]
 GO
-/****** Object:  UserDefinedFunction [dbo].[HexToInt4]    Script Date: 2017-04-30 09:53:44 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[HexToInt4]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION [dbo].[HexToInt4]
-GO
 /****** Object:  UserDefinedFunction [dbo].[GetSumBySubAcctIDBeforePostingDate]    Script Date: 2017-04-30 09:53:44 ******/
 DROP FUNCTION [dbo].[GetSumBySubAcctIDBeforePostingDate]
 GO
@@ -133,38 +138,41 @@ GO
 DROP FUNCTION [dbo].[GetSumBySubAcctIDBeforeDate]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnSplitString]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnSplitString]
+DROP FUNCTION [dbo].[SplitString]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnNumToString]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnNumToString]
+DROP FUNCTION [dbo].[NumToString]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnModifyTextWithCharsToRemove]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnModifyTextWithCharsToRemove]
+DROP FUNCTION [dbo].[ModifyTextWithCharsToRemove]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnModifyTextWithCharsToKeep]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnModifyTextWithCharsToKeep]
+DROP FUNCTION [dbo].[ModifyTextWithCharsToKeep]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnIsLuhnValid]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnIsLuhnValid]
+DROP FUNCTION [dbo].[IsLuhnValid]
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnHexToInt4]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnHexToInt4]
+
+/****** Object:  UserDefinedFunction [dbo].[HexToInt4]    Script Date: 2017-04-30 09:53:44 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[HexToInt4]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[HexToInt4]
 GO
+
 /****** Object:  UserDefinedFunction [dbo].[fnHex32toInt4]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnHex32toInt4]
+DROP FUNCTION [dbo].[Hex32toInt4]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnGetLuhnNumber]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnGetLuhnNumber]
+DROP FUNCTION [dbo].[GetLuhnNumber]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnGetLuhnDigit]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnGetLuhnDigit]
+DROP FUNCTION [dbo].[GetLuhnDigit]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnGetAccountBalanceByAccountIDAndTime]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnGetAccountBalanceByAccountIDAndTime]
+DROP FUNCTION [dbo].[GetAccountBalanceByAccountIDAndTime]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnDateToStringQ]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnDateToStringQ]
+DROP FUNCTION [dbo].[DateToStringQ]
 GO
 /****** Object:  UserDefinedFunction [dbo].[fnDateToString]    Script Date: 2017-04-30 09:53:44 ******/
-DROP FUNCTION [dbo].[fnDateToString]
+DROP FUNCTION [dbo].[DateToString]
 GO
