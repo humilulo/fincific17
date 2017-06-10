@@ -23,7 +23,7 @@
       <Column Name="AspNetUserId" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
       <Column Name="FirstName" Type="System.String" DbType="NVarChar(144)" CanBeNull="true" />
       <Column Name="LastName" Type="System.String" DbType="NVarChar(144)" CanBeNull="true" />
-      <Column Name="FirstNickName" Type="System.String" DbType="NVarChar(144)" CanBeNull="true" />
+      <Column Name="NickName" Type="System.String" DbType="NVarChar(144)" CanBeNull="true" />
       <Association Name="AspNetUser_Profile" Member="AspNetUser" ThisKey="AspNetUserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
     </Type>
   </Table>
