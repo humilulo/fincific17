@@ -28,6 +28,7 @@ namespace Fincific17.Controllers
 
 		private ProfileModel PrepareProfileModel(Domain.Profile p)
 		{
+			if (p == null) { return null; }
 			return new ProfileModel()
 			{
 				Id = p.Id,
@@ -48,7 +49,7 @@ namespace Fincific17.Controllers
 		{
 			string aspNetUserId = User.Identity.GetUserId(); // resembles "33615f44-eb44-459e-9999-b52e7b1bcefc"
 			ProfileModel model = PrepareProfileModel(_profileService.GetProfileByAspNetUserId(aspNetUserId));
-			if (model == null) { return HttpNotFound(); }
+			if (model == null) { model = new ProfileModel() { AspNetUserId = aspNetUserId }; }
 			return View(model);
 		}
 

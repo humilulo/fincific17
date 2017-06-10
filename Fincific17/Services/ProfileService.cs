@@ -56,21 +56,24 @@ namespace Fincific17.Services
 			return newProfileId;
 		}
 
-		/// <summary>
+		/// <summary>Note: when no profile exists with the specified <paramref name="aspNetUserId"/>,
+		/// then a new Domain.Profile is returned with its AspNetUserId set to the requested aspNetUserId.
 		/// </summary>
 		/// <param name="aspNetUserId"></param>
-		/// <param name="fdc">When null, then a new DataContext is constructed, used, and decontructed.</param>
 		/// <returns></returns>
 		public Domain.Profile GetProfileByAspNetUserId(string aspNetUserId)
 		{
 			using (var dc = new Data.FinancificDataContext())
 			{
 				Data.Profile profile = dc.Profiles.Where(w => w.AspNetUserId == aspNetUserId).FirstOrDefault();
+				if (profile == null) { return new Domain.Profile() { AspNetUserId = aspNetUserId }; }
 				return ConvertToDomainProfile(profile);
 			}
 		}
 
 		/// <summary>
+		/// Note: when no profile exists with the specified <paramref name="aspNetUserId"/>, then null is currently returned.
+		/// (Note that this differs from the functionality of GetProfileByAspNetUserId(), which never returns null.)
 		/// </summary>
 		/// <param name="aspNetUserId"></param>
 		/// <returns></returns>

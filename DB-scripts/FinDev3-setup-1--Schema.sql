@@ -774,7 +774,7 @@ CREATE TABLE [dbo].[Profile](
 	[AspNetUserId] [nvarchar](128) NOT NULL,
 	[FirstName] [nvarchar](144) NULL,
 	[LastName] [nvarchar](144) NULL,
-	[FirstNickName] [nvarchar](144) NULL,
+	[NickName] [nvarchar](144) NULL,
  CONSTRAINT [PK_Profile] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -924,7 +924,8 @@ ALTER TABLE [dbo].[LogBackup] ADD  CONSTRAINT [DF_LogBackup_WhenUTC]  DEFAULT (g
 GO
 ALTER TABLE [dbo].[LogBackup] ADD  CONSTRAINT [DF_LogBackup_WhenLocal]  DEFAULT (getdate()) FOR [WhenLocal]
 GO
-ALTER TABLE [dbo].[Profile] ADD  CONSTRAINT [DF_Profile_IsActive]  DEFAULT ((1)) FOR [IsActive]
+ALTER TABLE [dbo].[Profile]  WITH CHECK ADD  CONSTRAINT [FK_Profile_AspNetUsers] FOREIGN KEY([AspNetUserId])
+REFERENCES [dbo].[AspNetUsers] ([Id])
 GO
 ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FK_Account_Profile] FOREIGN KEY([ProfileId])
 REFERENCES [dbo].[Profile] ([Id])
@@ -978,10 +979,6 @@ GO
 ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [CK_Account_Title] CHECK  (([Title]=(([TitlePart1]+' - ')+[TitlePart2])))
 GO
 ALTER TABLE [dbo].[Account] CHECK CONSTRAINT [CK_Account_Title]
-GO
-ALTER TABLE [dbo].[Profile]  WITH CHECK ADD  CONSTRAINT [CK_Profile_IsActive] CHECK  (([DeactivationDateUTC] IS NULL AND [IsActive]=(1) OR [DeactivationDateUTC] IS NOT NULL AND [IsActive]=(0)))
-GO
-ALTER TABLE [dbo].[Profile] CHECK CONSTRAINT [CK_Profile_IsActive]
 GO
 ALTER TABLE [dbo].[FinCardPrefix]  WITH CHECK ADD  CONSTRAINT [CK_FinCardPrefix_SamePrefixLengths] CHECK  ((isnull(len([MinPrefix]),(-1))=isnull(len([MaxPrefix]),(-2))))
 GO
