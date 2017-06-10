@@ -1,6 +1,6 @@
 ﻿USE [FinDev3]
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnDateToString]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[DateToString]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -12,7 +12,7 @@ GO
 --	 removing any insignificant trailing 0's.
 -- Note: Return value is not quoted.
 -- =============================================
-CREATE FUNCTION [dbo].[fnDateToString](@d datetime)
+CREATE FUNCTION [dbo].[DateToString](@d datetime)
 RETURNS nvarchar(48)
 AS
 BEGIN
@@ -23,23 +23,23 @@ BEGIN
 		return null
 	end
 
-	set @r = dbo.fnNumToString(Year(@d))
-	set @r += '-' + Right('0' + dbo.fnNumToString(Month(@d)), 2)
-	set @r += '-' + Right('0' + dbo.fnNumToString(Day(@d)), 2)
+	set @r = dbo.NumToString(Year(@d))
+	set @r += '-' + Right('0' + dbo.NumToString(Month(@d)), 2)
+	set @r += '-' + Right('0' + dbo.NumToString(Day(@d)), 2)
 	
 	if @d <> DateAdd(month,Month(@d)-1+12*(Year(@d)-1900),Day(@d)-1)
 	begin
 		declare @ss smallint; set @ss = DatePart(Second, @d)
 		declare @ms smallint; set @ms = DatePart(MilliSecond, @d)
-		set @r += ' ' + Right('0' + dbo.fnNumToString(DatePart(Hour, @d)), 2)
-		set @r += ':' + Right('0' + dbo.fnNumToString(DatePart(Minute, @d)), 2)
+		set @r += ' ' + Right('0' + dbo.NumToString(DatePart(Hour, @d)), 2)
+		set @r += ':' + Right('0' + dbo.NumToString(DatePart(Minute, @d)), 2)
 		if @ss > 0 or @ms > 0
 		begin
-			set @r += ':' + Right('0' + dbo.fnNumToString(DatePart(Second, @d)), 2)
+			set @r += ':' + Right('0' + dbo.NumToString(DatePart(Second, @d)), 2)
 			if DatePart(Millisecond, @d) > 0
 			begin
 				declare @m varchar(30)
-				set @m = dbo.fnNumToString(Convert(decimal(8,4), DatePart(Millisecond, @d))/1000)
+				set @m = dbo.NumToString(Convert(decimal(8,4), DatePart(Millisecond, @d))/1000)
 				-- now @m resembles '0.23' for 230 milliseconds
 				set @m = right(@m, Len(@m) - 1) -- trim off first '0' before '.'
 				-- now @m resembles '.23' for 230 milliseconds
@@ -54,7 +54,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnDateToStringQ]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[DateToStringQ]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -66,13 +66,13 @@ GO
 --	 removing any insignificant trailing 0's.
 -- Note: Return value includes single quote before and after string value.
 -- =============================================
-CREATE FUNCTION [dbo].[fnDateToStringQ](@d datetime)
+CREATE FUNCTION [dbo].[DateToStringQ](@d datetime)
 RETURNS nvarchar(48)
 AS
 BEGIN
 	DECLARE @r nvarchar(48)
 
-	set @r = dbo.fnDateToString(@d);
+	set @r = dbo.DateToString(@d);
 	if (@r != 'NULL')
 	begin;
 		set @r = '''' + @r + '''';
@@ -83,7 +83,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnGetAccountBalanceByAccountIDAndTime]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[GetAccountBalanceByAccountIdAndTime]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -91,27 +91,27 @@ GO
 -- =============================================
 -- Author:		Edward Kovac
 -- Create date: 2014-07-12
--- Description:	Calculates the balance of any Account by Account.ID and at a given DateTime.
+-- Description:	Calculates the balance of any Account by Account.Id and at a given DateTime.
 -- =============================================
-CREATE FUNCTION [dbo].[fnGetAccountBalanceByAccountIDAndTime](@accountID int, @untilWhen DateTime)
-RETURNS Decimal(38,19)
+CREATE FUNCTION [dbo].[GetAccountBalanceByAccountIdAndTime](@accountId int, @untilWhen DateTime)
+RETURNS Decimal(28,12)
 AS
 BEGIN
-	if not exists (select ID from Account where ID = @accountID)
+	if not exists (select Id from Account where Id = @accountId)
 		return null
 
-	DECLARE	@d decimal(38,19) -- total sum of deposits
-		,	@w decimal(38,19) -- total sum of withdrawals
+	DECLARE	@d Decimal(28,12) -- total sum of deposits
+		,	@w Decimal(28,12) -- total sum of withdrawals
 
 	if (@untilWhen is null)
 	begin -- this will include all transactions, including pending transations
-		select @d = sum(  ToAmount) from [Tran] where   ToAccountID = @accountID
-		select @w = sum(FromAmount) from [Tran] where FromAccountID = @accountID
+		select @d = sum(  ToAmount) from [Tran] where   ToAccountId = @accountId
+		select @w = sum(FromAmount) from [Tran] where FromAccountId = @accountId
 	end
 	else
 	begin -- this excludes pending transactions and dates after given DateTime
-		select @d = sum(  ToAmount) from [Tran] where   ToAccountID = @accountID and PostDate <= @untilWhen
-		select @w = sum(FromAmount) from [Tran] where FromAccountID = @accountID and PostDate <= @untilWhen
+		select @d = sum(  ToAmount) from [Tran] where   ToAccountId = @accountId and PostDate <= @untilWhen
+		select @w = sum(FromAmount) from [Tran] where FromAccountId = @accountId and PostDate <= @untilWhen
 	end
 
 --	if @d is null and @w is null		return null
@@ -123,12 +123,12 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnGetLuhnDigit]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[GetLuhnDigit]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE FUNCTION	[dbo].[fnGetLuhnDigit](@Luhn VARCHAR(8000))
+CREATE FUNCTION	[dbo].[GetLuhnDigit](@Luhn VARCHAR(8000))
 RETURNS VARCHAR(1)
 AS
 BEGIN
@@ -159,7 +159,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnGetLuhnNumber]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[GetLuhnNumber]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -169,20 +169,20 @@ GO
 -- Create date: 2014-05-15
 -- Description:	Appends Luhn digit to string number
 -- =============================================
-CREATE FUNCTION [dbo].[fnGetLuhnNumber]
+CREATE FUNCTION [dbo].[GetLuhnNumber]
 (
 	@Luhn VarChar(7999)
 )
 RETURNS VarChar(8000)
 AS
 BEGIN
-	RETURN @Luhn + dbo.fnGetLuhnDigit(@Luhn)
+	RETURN @Luhn + dbo.GetLuhnDigit(@Luhn)
 END
 
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnHex32toInt4]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[Hex32toInt4]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -197,7 +197,7 @@ GO
 -- so SQL's 'NewID()' may be passed directly to
 -- this function.
 -- =============================================
-create FUNCTION [dbo].[fnHex32toInt4](@hx varchar(50))
+create FUNCTION [dbo].[Hex32toInt4](@hx varchar(50))
 RETURNS INT
 AS
 BEGIN
@@ -222,7 +222,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnHexToInt4]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[HexToInt4]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -234,14 +234,14 @@ GO
 --				(INT = Int32 = 4 byte integer).
 --              Result may be Positive, Negative, or 0.
 -- =============================================
-CREATE FUNCTION [dbo].[fnHexToInt4](@hx NVarChar(max), @ignoredChars NVarChar(max))
+CREATE FUNCTION [dbo].[HexToInt4](@hx NVarChar(max), @ignoredChars NVarChar(max))
 RETURNS INT
 AS
 BEGIN
 	if (@hx is null) begin; return null; end;
 
-	set @hx =  dbo.fnModifyTextWithCharsToRemove(@hx, @ignoredChars); -- Removes characters to be ignored.
-	if (@hx <> dbo.fnModifyTextWithCharsToKeep  (@hx, '0123456789ABCDEFabcdef'))
+	set @hx =  dbo.ModifyTextWithCharsToRemove(@hx, @ignoredChars); -- Removes characters to be ignored.
+	if (@hx <> dbo.ModifyTextWithCharsToKeep  (@hx, '0123456789ABCDEFabcdef'))
 	begin; -- @hx has invalid chars (chars that are not Hex chars) and not in the 'ignoreChars' parameter.
 		return null;
 	end;
@@ -253,16 +253,17 @@ BEGIN
 	set @r = CONVERT(INT, CONVERT(VARBINARY, @hx, 2));
 	return @r;
 END
-
-
-
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnIsLuhnValid]    Script Date: 2017-04-30 09:50:42 ******/
+
+
+
+
+/****** Object:  UserDefinedFunction [dbo].[IsLuhnValid]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE FUNCTION [dbo].[fnIsLuhnValid](@Luhn VARCHAR(8000))
+CREATE FUNCTION [dbo].[IsLuhnValid](@Luhn VARCHAR(8000))
 RETURNS BIT
 AS
 BEGIN
@@ -293,7 +294,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnModifyTextWithCharsToKeep]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[ModifyTextWithCharsToKeep]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -306,7 +307,7 @@ GO
 --	ModifyTextWithCharsToKeep('abcd654321', 'AbC23') returns 'AbC32'.
 --	All chars NOT in @charsToKeep are removed.
 -- =============================================
-CREATE FUNCTION [dbo].[fnModifyTextWithCharsToKeep]
+CREATE FUNCTION [dbo].[ModifyTextWithCharsToKeep]
 (	@txt NVarChar(max), @charsToKeep NVarChar(max)
 )
 RETURNS NVarChar(max)
@@ -334,7 +335,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnModifyTextWithCharsToRemove]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[ModifyTextWithCharsToRemove]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -347,7 +348,7 @@ GO
 --	both the Upper *and* Lower-Case equivalents from @txt.
 --	ModifyTextWithCharsToRemove('abcd654321', 'AbC23') returns 'd6541'.
 -- =============================================
-CREATE FUNCTION [dbo].[fnModifyTextWithCharsToRemove]
+CREATE FUNCTION [dbo].[ModifyTextWithCharsToRemove]
 (	@txt NVarChar(max), @charsToRemove NVarChar(max)
 )
 RETURNS NVarChar(max)
@@ -376,7 +377,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnNumToString]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[NumToString]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -387,7 +388,7 @@ GO
 -- Description:	Converts Sql data to string,
 --	 removing any insignificant trailing 0's.
 -- =============================================
-CREATE FUNCTION [dbo].[fnNumToString](@num sql_variant)
+CREATE FUNCTION [dbo].[NumToString](@num sql_variant)
 RETURNS nvarchar(48)
 AS
 BEGIN
@@ -415,7 +416,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[fnSplitString]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[SplitString]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -432,7 +433,7 @@ GO
 -- [itemIndex1] field indexes each return record and begins counting at 1.
 -- [item] field is the string item.
 -- =============================================
-CREATE FUNCTION [dbo].[fnSplitString]
+CREATE FUNCTION [dbo].[SplitString]
 (
 	@txt nvarchar(max),
 	@separatorString nvarchar(999),
@@ -495,7 +496,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[GetSumBySubAcctIDBeforeDate]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[GetSumBySubAcctIdBeforeDate]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -505,8 +506,8 @@ GO
 -- Create date: 2014-04-24
 -- Description:	Retrieves the sum of one person's SubAccount before a given date.
 -- =============================================
-CREATE FUNCTION [dbo].[GetSumBySubAcctIDBeforeDate]
-(	@SubAccountID int
+CREATE FUNCTION [dbo].[GetSumBySubAcctIdBeforeDate]
+(	@SubAccountId int
 ,	@endDate datetime
 )
 RETURNS money
@@ -515,7 +516,7 @@ BEGIN
 	DECLARE @r money
 
 	select @r = Sum(TraAmt) from Xaction
-	 where TraSubActID = @SubAccountID
+	 where TraSubActId = @SubAccountId
 	  and TraDate < @endDate
 
 	RETURN @r
@@ -524,7 +525,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [dbo].[GetSumBySubAcctIDBeforePostingDate]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  UserDefinedFunction [dbo].[GetSumBySubAcctIdBeforePostingDate]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -534,8 +535,8 @@ GO
 -- Create date: 2014-04-24
 -- Description:	Retrieves the sum of one person's SubAccount before a given posting date.
 -- =============================================
-create FUNCTION [dbo].[GetSumBySubAcctIDBeforePostingDate]
-(	@SubAccountID int
+create FUNCTION [dbo].[GetSumBySubAcctIdBeforePostingDate]
+(	@SubAccountId int
 ,	@endPostingDate datetime
 )
 RETURNS money
@@ -544,7 +545,7 @@ BEGIN
 	DECLARE @r money
 
 	select @r = Sum(TraAmt) from Xaction
-	 where TraSubActID = @SubAccountID
+	 where TraSubActId = @SubAccountId
 	  and TraPostDate < @endPostingDate
 
 	RETURN @r
@@ -562,9 +563,9 @@ SET ANSI_PADDING ON
 GO
 CREATE TABLE [dbo].[Account](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[ProfileID] [int] NOT NULL,
-	[Number]  AS (CONVERT([bigint],[dbo].[fnModifyTextWithCharsToKeep]([NumStr],'0123456789'),(0))),
-	[NumStr] [varchar](36) NOT NULL,
+	[ProfileId] [int] NOT NULL,
+--	[Number]  AS (CONVERT([bigint],[dbo].[ModifyTextWithCharsToKeep]([NumStr],'0123456789'),(0))),
+	AccountName varchar(36) not null,
 	[Title] [nvarchar](50) NOT NULL,
 	[TitlePart1] [nvarchar](12) NOT NULL,
 	[TitlePart2] [nvarchar](12) NOT NULL,
@@ -582,6 +583,7 @@ CREATE TABLE [dbo].[Account](
 ) ON [PRIMARY]
 
 GO
+
 SET ANSI_PADDING OFF
 GO
 /****** Object:  Table [dbo].[AspNetRoles]    Script Date: 2017-04-30 09:50:42 ******/
@@ -762,6 +764,7 @@ GO
 SET ANSI_PADDING OFF
 GO
 /****** Object:  Table [dbo].[Profile]    Script Date: 2017-04-30 09:50:42 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -769,16 +772,9 @@ GO
 CREATE TABLE [dbo].[Profile](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[AspNetUserId] [nvarchar](128) NOT NULL,
-	[UserName] [nvarchar](50) NOT NULL,
-	[PassWord] [nvarchar](50) NULL,
-	[DeactivationDateUTC] [smalldatetime] NULL,
-	[IsActive] [bit] NOT NULL,
-	[AccountNumRoot] [bigint] NULL,
-	[AccountTitle] [nvarchar](50) NULL,
 	[FirstName] [nvarchar](144) NULL,
 	[LastName] [nvarchar](144) NULL,
 	[FirstNickName] [nvarchar](144) NULL,
-	[UniqueRand] [bigint] NULL,
  CONSTRAINT [PK_Profile] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -847,10 +843,10 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Tran](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[TranTypeID] [tinyint] NOT NULL,
-	[ToAccountID] [int] NULL,
+	[TranTypeId] [tinyint] NOT NULL,
+	[ToAccountId] [int] NULL,
 	[ToAmount] [decimal](38, 19) NULL,
-	[FromAccountID] [int] NULL,
+	[FromAccountId] [int] NULL,
 	[FromAmount] [decimal](38, 19) NULL,
 	[TranDate] [datetime] NULL,
 	[PostDate] [datetime] NULL,
@@ -884,20 +880,21 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [dbo].[AccountView]
 AS
-SELECT	p.[Id] as ProfileID
-	,	p.UserName
+SELECT	p.[Id] as ProfileId
+	,	p.[UserName]
 	,	p.[AccountNumRoot]
-	,	p.AccountTitle as ShortAccountTitle
+	,	p.[AccountTitle] as ShortAccountTitle
 	,	p.[DeactivationDateUTC] as WhenAccountExpiresUTC
-	,	a.ID as AccountID
-	,	a.Number as AccountNumber
-	,	a.NumStr as AccountNumberStr
+	,	a.Id as AccountId
+	,	a.AccountName as AccountName
+--	,	a.Number as AccountNumber	--	deprecated by AccountName field
+--	,	a.NumStr as AccountNumberStr--	deprecated by AccountName field
 	,	a.Title as AccountTitle
 	,	a.DeactivationDateUTC as WhenProfileExpiresUTC
 	,	a.APY
 	,	a.NextAccrualDate
 	,	a.AccrualPeriodInMonths
- FROM dbo.Profile p JOIN dbo.Account a ON p.ID = a.ProfileID
+ FROM dbo.Profile p JOIN dbo.Account a ON p.Id = a.ProfileId
 GO
 /****** Object:  View [dbo].[FinCardPrefixView]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
@@ -906,7 +903,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE VIEW [dbo].[FinCardPrefixView]
 AS
-SELECT	p.[Id]			as pID
+SELECT	p.[Id]			as pId
 	,	p.[FinKey]		as pFinKey
 	,	p.[MinPrefix]	as pMinPrefix
 	,	p.[MaxPrefix]	as pMaxPrefix
@@ -929,9 +926,7 @@ ALTER TABLE [dbo].[LogBackup] ADD  CONSTRAINT [DF_LogBackup_WhenLocal]  DEFAULT 
 GO
 ALTER TABLE [dbo].[Profile] ADD  CONSTRAINT [DF_Profile_IsActive]  DEFAULT ((1)) FOR [IsActive]
 GO
-ALTER TABLE [dbo].[Profile] ADD  CONSTRAINT [DF_Profile_Dev_UseInDev]  DEFAULT ((0)) FOR [Dev_UseInDev]
-GO
-ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FK_Account_Profile] FOREIGN KEY([ProfileID])
+ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FK_Account_Profile] FOREIGN KEY([ProfileId])
 REFERENCES [dbo].[Profile] ([Id])
 GO
 ALTER TABLE [dbo].[Account] CHECK CONSTRAINT [FK_Account_Profile]
@@ -965,17 +960,17 @@ REFERENCES [dbo].[FinCard] ([FinKey])
 GO
 ALTER TABLE [dbo].[FinCardPrefix] CHECK CONSTRAINT [FK_FinCardPrefix_FinCard]
 GO
-ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_FromAccount] FOREIGN KEY([FromAccountID])
+ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_FromAccount] FOREIGN KEY([FromAccountId])
 REFERENCES [dbo].[Account] ([Id])
 GO
 ALTER TABLE [dbo].[Tran] CHECK CONSTRAINT [FK_Tran_FromAccount]
 GO
-ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_ToAccount] FOREIGN KEY([ToAccountID])
+ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_ToAccount] FOREIGN KEY([ToAccountId])
 REFERENCES [dbo].[Account] ([Id])
 GO
 ALTER TABLE [dbo].[Tran] CHECK CONSTRAINT [FK_Tran_ToAccount]
 GO
-ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_TranType] FOREIGN KEY([TranTypeID])
+ALTER TABLE [dbo].[Tran]  WITH CHECK ADD  CONSTRAINT [FK_Tran_TranType] FOREIGN KEY([TranTypeId])
 REFERENCES [dbo].[TranType] ([Id])
 GO
 ALTER TABLE [dbo].[Tran] CHECK CONSTRAINT [FK_Tran_TranType]
@@ -1004,10 +999,10 @@ GO
 -- =============================================
 CREATE PROCEDURE [dbo].[AddExchangeTran] 
 	-- Add the parameters for the stored procedure here
-	@toAccountID int,
-	@toAmount decimal(38,19),
-	@fromAccountID int,
-	@fromAmount decimal(38,19),
+	@toAccountId int,
+	@toAmount Decimal(28,12),
+	@fromAccountId int,
+	@fromAmount Decimal(28,12),
 	@tranDate datetime,
 	@postDate datetime,
 	@spotPrice decimal(38, 19)
@@ -1018,9 +1013,9 @@ BEGIN
 	SET NOCOUNT ON;
 
 	SELECT
-	@toAccountID as ToAccountID,
+	@toAccountId as ToAccountId,
 	@toAmount as ToAmount,
-	@fromAccountID as FromAccountID,
+	@fromAccountId as FromAccountId,
 	@fromAmount as FromAmount,
 	@tranDate as TranDate,
 	@postDate as PostDate,
@@ -1057,13 +1052,13 @@ BEGIN
 
 	declare @dayX tinyint
 	declare @table table
-	(ID int, APY decimal(9,8),
+	(Id int, APY decimal(9,8),
 	 InterestRate decimal(20,18), -- this seems to only benefit with up to 16 precision: decimal(17,16)
 	 NextAccrualDate date, AccrualPeriodInMonths tinyint,
-	 amt decimal(38,19), [Precision] smallint, dy tinyint, dii tinyint, NoteText nvarchar(144) )
+	 amt Decimal(28,12), [Precision] smallint, dy tinyint, dii tinyint, NoteText nvarchar(144) )
 
-	insert into @table (ID, APY, NextAccrualDate, AccrualPeriodInMonths, Amt, [Precision], NoteText)
-	 select ID, APY, NextAccrualDate, AccrualPeriodInMonths, 0, [Precision], @noteText from Account
+	insert into @table (Id, APY, NextAccrualDate, AccrualPeriodInMonths, Amt, [Precision], NoteText)
+	 select Id, APY, NextAccrualDate, AccrualPeriodInMonths, 0, [Precision], @noteText from Account
 	  where NextAccrualDate is not null and APY is not null and AccrualPeriodInMonths is not null
 	   and  NextAccrualDate <= GetDate()
 
@@ -1073,13 +1068,13 @@ BEGIN
 	update @table set InterestRate = Round(InterestRate, 8)
 
 	update @table set NoteText = replace(NoteText, '{yyyy-MM}', '{yyyy}-{MM}') where CharIndex('{yyyy-MM}', NoteText) > 0
-	update @table set NoteText = replace(NoteText, '{yyyy}', dbo.fnNumToString(Year(DateAdd(day, -dy, NextAccrualDate))))
+	update @table set NoteText = replace(NoteText, '{yyyy}', dbo.NumToString(Year(DateAdd(day, -dy, NextAccrualDate))))
 		where CharIndex('{yyyy}', NoteText) > 0
-	update @table set NoteText = replace(NoteText, '{MM}' , Right('0' + dbo.fnNumToString(Month(DateAdd(day, -dy, NextAccrualDate))), 2))
+	update @table set NoteText = replace(NoteText, '{MM}' , Right('0' + dbo.NumToString(Month(DateAdd(day, -dy, NextAccrualDate))), 2))
 		where CharIndex('{MM}', NoteText) > 0
-	update @table set NoteText = replace(NoteText, '{APY%}', dbo.fnNumToString(APY*100) + '%')
+	update @table set NoteText = replace(NoteText, '{APY%}', dbo.NumToString(APY*100) + '%')
 		where CharIndex('{APY%}', NoteText) > 0
-	update @table set NoteText = replace(NoteText, '{InterestRate%}', dbo.fnNumToString(InterestRate*100) + '%')
+	update @table set NoteText = replace(NoteText, '{InterestRate%}', dbo.NumToString(InterestRate*100) + '%')
 		where CharIndex('{InterestRate%}', NoteText) > 0
 
 	select @dayX = max(dy) from @table
@@ -1095,12 +1090,12 @@ BEGIN
 		if @dayX > 27 or @dayX < 3
 		begin
 			set @txt = isnull(@txt + ' - ', '') + 'dayX=' + left(@dayX, 2)
-			select @txt = @txt + ' [' + left(ID, 9) + '] ' + convert(nvarchar,DateAdd(day, -dy, NextAccrualDate))
+			select @txt = @txt + ' [' + left(Id, 9) + '] ' + convert(nvarchar,DateAdd(day, -dy, NextAccrualDate))
 			 from @table where dy > 0
 		end
 
 		update @table set
-				amt += dbo.fnGetAccountBalanceByAccountIDAndTime(ID, DateAdd(day, -dy, NextAccrualDate))
+				amt += dbo.GetAccountBalanceByAccountIdAndTime(Id, DateAdd(day, -dy, NextAccrualDate))
 			--	adds the balance for date that is dy days before NextAccrualDate for that account.
 			,	dy  -= 1 -- track days. dy  is how many days are left to include calculation of balance that day.
 			,	dii += 1 -- track days. dii is how many days have already been counted.
@@ -1118,7 +1113,7 @@ BEGIN
 	end
 
 	update @table set amt = Round(amt / dii, [Precision])
-	update @table set NoteText = replace(NoteText, '{AverageBalance}' , dbo.fnNumToString(amt))
+	update @table set NoteText = replace(NoteText, '{AverageBalance}' , dbo.NumToString(amt))
 	 where CharIndex('{AverageBalance}', NoteText) > 0
 
 	if @show <> 0
@@ -1144,15 +1139,15 @@ BEGIN
 
 	delete from @table where amt = 0
 
-	insert into [Tran] (TranTypeID, ToAccountID, ToAmount, FromAccountID, FromAmount,
+	insert into [Tran] (TranTypeId, ToAccountId, ToAmount, FromAccountId, FromAmount,
 		TranDate, PostDate, Note)
-	 select	1 as TranTypeID -- 1 = Deposit
-			,	ID as ToAccountID, amt as ToAmount, null as FromAccountID, null as FromAmount
+	 select	1 as TranTypeId -- 1 = Deposit
+			,	Id as ToAccountId, amt as ToAmount, null as FromAccountId, null as FromAmount
 			,	NextAccrualDate as TranDate, NextAccrualDate as PostDate, NoteText as Note
 		 from @table
 
 	update Account set NextAccrualDate = DateAdd(month, a.AccrualPeriodInMonths, a.NextAccrualDate)
-	 from Account a join @table t on a.ID = t.ID
+	 from Account a join @table t on a.Id = t.Id
 
 END
 
@@ -1183,17 +1178,17 @@ BEGIN
 	set @noteText = 'Rent for {yyyy-MM} {MonthName}'
 
 	declare @dayX tinyint
-	declare @table table (ID int, NextRentChargeAmount decimal(38,19), NextRentDate datetime, NoteText nvarchar(144) )
+	declare @table table (Id int, NextRentChargeAmount Decimal(28,12), NextRentDate datetime, NoteText nvarchar(144) )
 
-	insert into @table (ID, NextRentChargeAmount, NextRentDate, NoteText)
-	 select ID, NextRentChargeAmount, NextRentDate, @noteText from Account
+	insert into @table (Id, NextRentChargeAmount, NextRentDate, NoteText)
+	 select Id, NextRentChargeAmount, NextRentDate, @noteText from Account
 	  where NextRentDate <= GetDate() and NextRentChargeAmount <> 0
 
 	update @table set NextRentDate = DateAdd(second, -1, DATEADD(day, 1, NextRentDate))
 	update @table set NoteText = replace(NoteText, '{yyyy-MM}', '{yyyy}-{MM}') where CharIndex('{yyyy-MM}', NoteText) > 0
-	update @table set NoteText = replace(NoteText, '{yyyy}', dbo.fnNumToString(Year(NextRentDate)))
+	update @table set NoteText = replace(NoteText, '{yyyy}', dbo.NumToString(Year(NextRentDate)))
 		where CharIndex('{yyyy}', NoteText) > 0
-	update @table set NoteText = replace(NoteText, '{MM}' , Right('0' + dbo.fnNumToString(Month(NextRentDate)), 2))
+	update @table set NoteText = replace(NoteText, '{MM}' , Right('0' + dbo.NumToString(Month(NextRentDate)), 2))
 		where CharIndex('{MM}', NoteText) > 0
 	update @table set NoteText = replace(NoteText, '{MonthName}', DateName(month, NextRentDate))
 		where CharIndex('{MonthName}', NoteText) > 0
@@ -1201,15 +1196,15 @@ BEGIN
 	if @show <> 0
 	begin; select * from @table; end
 
-	insert into [Tran] (TranTypeID, FromAccountID, FromAmount, ToAccountID, ToAmount,
+	insert into [Tran] (TranTypeId, FromAccountId, FromAmount, ToAccountId, ToAmount,
 		TranDate, PostDate, Note)
-	 select	2 as TranTypeID -- 2 = Withdrawal
-			,	ID as FromAccountID, NextRentChargeAmount as FromAmount, null as ToAccountID, null as ToAmount
+	 select	2 as TranTypeId -- 2 = Withdrawal
+			,	Id as FromAccountId, NextRentChargeAmount as FromAmount, null as ToAccountId, null as ToAmount
 			,	NextRentDate as TranDate, NextRentDate as PostDate, NoteText as Note
 		 from @table
 
 	update Account set NextRentDate = DateAdd(month, 1, a.NextRentDate)
-	 from Account a join @table t on a.ID = t.ID
+	 from Account a join @table t on a.Id = t.Id
 
 END
 
@@ -1258,19 +1253,19 @@ BEGIN
 
 	if CharIndex('{UtcDate}', @p) > 0
 	begin
-		select @p = Replace(@p, '{UtcDate}', Left(dbo.fnDateToString(GetUtcDate()),10))
+		select @p = Replace(@p, '{UtcDate}', Left(dbo.DateToString(GetUtcDate()),10))
 	end
 	if CharIndex('{UtcTime}', @p) > 0
 	begin
-		select @p = Replace(@p, '{UtcTime}', Replace(SUBSTRING(dbo.fnDateToString(GetUtcDate()),12,8), ':', '-'))
+		select @p = Replace(@p, '{UtcTime}', Replace(SUBSTRING(dbo.DateToString(GetUtcDate()),12,8), ':', '-'))
 	end
 	if CharIndex('{LocalDate}', @p) > 0
 	begin
-		select @p = Replace(@p, '{LocalDate}', Left(dbo.fnDateToString(GetDate()),10))
+		select @p = Replace(@p, '{LocalDate}', Left(dbo.DateToString(GetDate()),10))
 	end
 	if CharIndex('{LocalTime}', @p) > 0
 	begin
-		select @p = Replace(@p, '{LocalTime}', Replace(SUBSTRING(dbo.fnDateToString(GetDate()),12,8), ':', '-'))
+		select @p = Replace(@p, '{LocalTime}', Replace(SUBSTRING(dbo.DateToString(GetDate()),12,8), ':', '-'))
 	end
 	set @p = replace(replace(@p, '/', ''), '\', '') -- remove any dir separater chars in @p
 	set @f = replace(@f, '/', '\')
@@ -1309,18 +1304,20 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-SELECT 'INSERT INTO [Tran] (ID, TranTypeID, ToAccountID, ToAmount, FromAccountID, FromAmount, TranDate, PostDate, Note) VALUES ' +
-'(' + dbo.fnNumToString(ID) + ', ' + dbo.fnNumToString(TranTypeID) + ', ' + dbo.fnNumToString(ToAccountID) + ', '
-	+ dbo.fnNumToString(ToAmount) + ', ' + dbo.fnNumToString(FromAccountID) + ', ' + dbo.fnNumToString(FromAmount) + ', '
-	+ dbo.fnDateToStringQ(TranDate) + ', ' + dbo.fnDateToStringQ(PostDate) + ', '
+SELECT 'INSERT INTO [Tran] (Id, TranTypeId, ToAccountId, ToAmount, FromAccountId, FromAmount, TranDate, PostDate, Note) VALUES ' +
+'(' + dbo.NumToString(Id) + ', ' + dbo.NumToString(TranTypeId) + ', ' + dbo.NumToString(ToAccountId) + ', '
+	+ dbo.NumToString(ToAmount) + ', ' + dbo.NumToString(FromAccountId) + ', ' + dbo.NumToString(FromAmount) + ', '
+	+ dbo.DateToStringQ(TranDate) + ', ' + dbo.DateToStringQ(PostDate) + ', '
 	+ IsNull('''' + replace(Note, '''', '''''') + '''', 'null') + ')' SQL
---, ID, TranTypeID, ToAccountID, ToAmount, FromAccountID, FromAmount, TranDate, PostDate, Note
+--, Id, TranTypeId, ToAccountId, ToAmount, FromAccountId, FromAmount, TranDate, PostDate, Note
  FROM [Tran]
- where (ToAccountID is null or
-        ToAccountID IN (select ID from [Account] where ProfileID in (select ID from [Profile] where Dev_UseInDev <> 0)))
- and (FromAccountID is null or
-      FromAccountID IN (select ID from [Account] where ProfileID in (select ID from [Profile] where Dev_UseInDev <> 0)))
- ORDER BY ID
+/*
+ where (ToAccountId is null or
+        ToAccountId IN (select Id from [Account] where ProfileId in (select Id from [Profile] where Dev_UseInDev <> 0)))
+ and (FromAccountId is null or
+      FromAccountId IN (select Id from [Account] where ProfileId in (select Id from [Profile] where Dev_UseInDev <> 0)))
+*/
+ ORDER BY Id
 END
 GO
 
@@ -1335,7 +1332,7 @@ GO
 -- Create date: 2016-06-24
 -- Description:	Creates and sets a new UniqueRand value that does not have a match in the [Profile] table.
 -- =============================================
-CREATE PROCEDURE [dbo].[SetUniqueRandForProfile](@profileID int)
+CREATE PROCEDURE [dbo].[SetUniqueRandForProfile](@profileId int)
 AS
 BEGIN
 	declare @r int -- Return value (Unique, positive, Random int)
@@ -1350,17 +1347,17 @@ BEGIN
 		while (CharIndex(Left(@t, 1), '89ABCDEF') > 0)
 		begin; set @t = Substring(@t, 2, 64); end;
 		if (Len(@t) < 8) begin; set @t = '00'; end;
-		set @r = dbo.fnHextoInt4(Left(@t, 8), null);
+		set @r = dbo.HexToInt4(Left(@t, 8), null);
 
 		-- when @r already exists in Profile, then set @r = 0, so loop will repeat
 		select @r = 0 from [Profile] where UniqueRand = @r;
 	end;
-	update [Profile] set UniqueRand = @r where id = @profileID;
+	update [Profile] set UniqueRand = @r where id = @profileId;
 END
 GO
 
 
-/****** Object:  StoredProcedure [dbo].[ViewAccountTransactionsFor3AccountsByID]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  StoredProcedure [dbo].[ViewAccountTransactionsFor3AccountsById]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1372,8 +1369,8 @@ GO
 --              of 3 subaccounts in a single table
 --              view format.
 -- =============================================
-CREATE PROCEDURE [dbo].[ViewAccountTransactionsFor3AccountsByID]
-	@profileID int,
+CREATE PROCEDURE [dbo].[ViewAccountTransactionsFor3AccountsById]
+	@profileId int,
 	@accTitle1 nvarchar(50),
 	@accTitle2 nvarchar(50) = null,
 	@accTitle3 nvarchar(50) = null
@@ -1387,9 +1384,9 @@ BEGIN
 			@id2 int, @show2 bit,
 			@id3 int, @show3 bit;
 
-	select @id1 = ID from Account where ProfileID = @profileID and TitlePart2 = @accTitle1
-	select @id2 = ID from Account where ProfileID = @profileID and TitlePart2 = @accTitle2
-	select @id3 = ID from Account where ProfileID = @profileID and TitlePart2 = @accTitle3
+	select @id1 = Id from Account where ProfileId = @profileId and TitlePart2 = @accTitle1
+	select @id2 = Id from Account where ProfileId = @profileId and TitlePart2 = @accTitle2
+	select @id3 = Id from Account where ProfileId = @profileId and TitlePart2 = @accTitle3
 
 	if @id1 = @id3 set @id3 = null
 	if @id1 = @id2 set @id2 = null
@@ -1401,7 +1398,7 @@ BEGIN
 
 	declare @t table
 	(	o int null, -- used to order the rows
-		tID int null, -- transaction ID used for order by after descending date
+		tId int null, -- transaction Id used for order by after descending date
 		tDate datetime not null,	-- transaction date
 		pDate datetime     null,	-- posted date
 		inc1 smallmoney null, -- amount increase for #1 (USD balance)
@@ -1412,24 +1409,24 @@ BEGIN
 		cs3 smallmoney null, -- cumulative sum for inc3 (SAE (Silver American Eagle) coin count)
 		noteText nvarchar(144)) -- human note text for transaction
 
-	insert into @t (tID, tDate, pDate, noteText, inc1, inc2, inc3)
-		select t.ID, t.TranDate, t.PostDate, [Note],
-		 case when    ToAccountID = @id1 then    ToAmount
-		      when  FromAccountID = @id1 then -FromAmount
+	insert into @t (tId, tDate, pDate, noteText, inc1, inc2, inc3)
+		select t.Id, t.TranDate, t.PostDate, [Note],
+		 case when    ToAccountId = @id1 then    ToAmount
+		      when  FromAccountId = @id1 then -FromAmount
 		      else 0 end as inc1,
-		 case when    ToAccountID = @id2 then    ToAmount
-		      when  FromAccountID = @id2 then -FromAmount
+		 case when    ToAccountId = @id2 then    ToAmount
+		      when  FromAccountId = @id2 then -FromAmount
 		      else 0 end as inc2,
-		 case when    ToAccountID = @id3 then    ToAmount
-		      when  FromAccountID = @id3 then -FromAmount
+		 case when    ToAccountId = @id3 then    ToAmount
+		      when  FromAccountId = @id3 then -FromAmount
 		      else 0 end as inc3
-		 from [Tran] t where (ToAccountID in (@id1, @id2, @id3)
-						or	FromAccountID in (@id1, @id2, @id3))
+		 from [Tran] t where (ToAccountId in (@id1, @id2, @id3)
+						or	FromAccountId in (@id1, @id2, @id3))
 						and (ToAmount <> 0 or FromAmount <> 0)
 
 	-- update pk column, setting it to the row_number of @t, when ordered by tDate, pDate
 	update x set x.o = x.newO
-	 from (select o, row_number() over (order by tDate, tID, pDate) as newO
+	 from (select o, row_number() over (order by tDate, tId, pDate) as newO
 			 from @t
 		) as x
 
@@ -1498,14 +1495,14 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	declare @pID int; select @pID = ID from [Profile] where AccountTitle = @profileAccountTitle
-	exec ViewAccountTransactionsFor3AccountsByID @pID, @accountTitle1, @accountTitle2, @accountTitle3
+	declare @pId int; select @pId = Id from [Profile] where AccountTitle = @profileAccountTitle
+	exec ViewAccountTransactionsFor3AccountsById @pId, @accountTitle1, @accountTitle2, @accountTitle3
 END
 
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[ViewTransactionsByProfileID_AccountTitles]    Script Date: 2017-04-30 09:50:42 ******/
+/****** Object:  StoredProcedure [dbo].[ViewTransactionsByProfileId_AccountTitles]    Script Date: 2017-04-30 09:50:42 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1526,8 +1523,8 @@ GO
 --				',USD,SAE' gives 2 fields: 'USD' and 'SAE'.
 --				';USD;90%;SAE' gives 3 fields: 'USD', '90%', and 'SAE'.
 -- =============================================
-CREATE PROCEDURE [dbo].[ViewTransactionsByProfileID_AccountTitles]
-	@profileID int,
+CREATE PROCEDURE [dbo].[ViewTransactionsByProfileId_AccountTitles]
+	@profileId int,
 	@accTitles nvarchar(987) -- if null, empty, or 'ALL' or 'omni' or 'omna' or 'tota' then all accounts for the profile.
 AS
 BEGIN
@@ -1538,7 +1535,7 @@ BEGIN
 	declare @x int, @cx int, @xMax int, @cxMax int, @q1 nvarchar(max), @q2 nvarchar(max), @sq nvarchar(max)
 	declare @meta table
 	(	cx int not null, -- key for this table. index #. starts at 1 & increments.
-		aID int null, -- account ID for this record
+		aId int null, -- account Id for this record
 		aTitle nvarchar(987) not null -- account title for result table header
 	); set @accTitles = RTrim(@accTitles)
 	if @accTitles is null
@@ -1546,26 +1543,26 @@ BEGIN
 	or @accTitles = '*'
 	or (Len(@accTitles) = 2 and Left(@accTitles, 1)<>'*' and Right(@accTitles, 1)='*')
 	begin
-		insert into @meta (aID, cx, aTitle)
-			select a.ID, 0, TitlePart2
+		insert into @meta (aId, cx, aTitle)
+			select a.Id, 0, TitlePart2
 				 from Account a
-				where ProfileID=@profileID
-			select top 1 @x = aID, @cx = 0 from @meta where cx = 0 order by aTitle
+				where ProfileId = @profileId
+			select top 1 @x = aId, @cx = 0 from @meta where cx = 0 order by aTitle
 			while @x > 0
 			begin; set @cx = @cx + 1
-				update @meta set cx = @cx where aID = @x
+				update @meta set cx = @cx where aId = @x
 				set @x = 0
-				select top 1 @x = aID from @meta where cx = 0 order by aTitle
+				select top 1 @x = aId from @meta where cx = 0 order by aTitle
 			end
 	end
 	else
 	begin
-		insert into @meta (aID, cx, aTitle) select null, * from dbo.fnSplitString(@accTitles,null,1,1)
-		update m set aID = a.ID, aTitle=a.TitlePart2
+		insert into @meta (aId, cx, aTitle) select null, * from dbo.SplitString(@accTitles,null,1,1)
+		update m set aId = a.Id, aTitle=a.TitlePart2
 			  from @meta m join Account a on a.TitlePart2 = m.aTitle
-			 where a.ProfileID = @profileID
+			 where a.ProfileId = @profileId
 		delete m1 from @meta m1 join @meta m2 on m1.aTitle = m2.aTitle and m1.cx > m2.cx
-		delete from @meta where aTitle is null or Len(aTitle) = 0 or aID is null or aID <= 0
+		delete from @meta where aTitle is null or Len(aTitle) = 0 or aId is null or aId <= 0
 		set @cx = 0
 		select top 1 @cx = m1.cx from @meta m1 left join @meta m2 on m1.cx = m2.cx + 1 where m1.cx > 1 and m2.cx is null
 		while @cx > 1
@@ -1580,7 +1577,7 @@ BEGIN
 
 	create table #t
 	(	o int null, -- used to order the rows
-		tID int null, -- transaction ID used for order by after descending date
+		tId int null, -- transaction Id used for order by after descending date
 		tDate datetime not null,	-- transaction date
 		pDate datetime     null,	-- posted date
 		noteText nvarchar(144)) -- human note text for transaction
@@ -1588,9 +1585,9 @@ BEGIN
 	set @cx = 1
 	while (@cx <= @cxMax)
 	begin
-		set @sq = 'alter table #t add inc' + Left(@cx, 9) + ' decimal(38,19) null'
+		set @sq = 'alter table #t add inc' + Left(@cx, 9) + ' Decimal(28,12) null'
 		-- previous SQL adds column [inc1] to table #t when @cx = 1
-		set @sq += ', cs' + Left(@cx, 9) + ' decimal(38,19) null; '
+		set @sq += ', cs' + Left(@cx, 9) + ' Decimal(28,12) null; '
 		-- previous SQL adds column [cs1] to table #t when @cx = 1
 		exec sp_executeSQL @sq; set @cx += 1
 	end
@@ -1602,19 +1599,19 @@ BEGIN
 	select @q1 = '', @q2 = null, @sq = ''
 	select
 		@q1 += ',inc' + Left(m.cx, 9),
-		@q2 = isnull(@q2 + ',', '(') + Left(m.aID, 9),
+		@q2 = isnull(@q2 + ',', '(') + Left(m.aId, 9),
 		@sq += ',
-			case when    ToAccountID = ' + Left(m.aID, 9) + ' then    ToAmount
-				when  FromAccountID = ' + Left(m.aID, 9) + ' then -FromAmount
+			case when    ToAccountId = ' + Left(m.aId, 9) + ' then    ToAmount
+				when  FromAccountId = ' + Left(m.aId, 9) + ' then -FromAmount
 				else 0 end as inc' + Left(m.cx, 9)
 			from @meta m order by m.cx
 	set @q2 += ')'
 	-- now @q1 resembles ',inc1,inc2,inc3,inc4,inc5,inc6'
-	-- now @q2 resembles '(5,15,8,6,7,25)' where each # is each account ID in aID field in table #t
-	set @q1 = 'insert into #t (tID, tDate, pDate, noteText' + @q1 + ')
-		select t.ID, t.TranDate, t.PostDate, [Note]'
-	set @q2 = ' from [Tran] t where (ToAccountID in ' + @q2 + '
-						or	FromAccountID in ' + @q2 + ')
+	-- now @q2 resembles '(5,15,8,6,7,25)' where each # is each account Id in aId field in table #t
+	set @q1 = 'insert into #t (tId, tDate, pDate, noteText' + @q1 + ')
+		select t.Id, t.TranDate, t.PostDate, [Note]'
+	set @q2 = ' from [Tran] t where (ToAccountId in ' + @q2 + '
+						or	FromAccountId in ' + @q2 + ')
 						and (ToAmount <> 0 or FromAmount <> 0)'
 	set @sq = @q1 + @sq + @q2 + '{EndSQL}'
 	if CharIndex('{EndSQL}', @sq) > 0
@@ -1631,7 +1628,7 @@ BEGIN
 
 	-- update pk column, setting it to the row_number of @t, when ordered by tDate, pDate
 	update x set x.o = x.newO
-	 from (select o, row_number() over (order by tDate, tID, pDate) as newO
+	 from (select o, row_number() over (order by tDate, tId, pDate) as newO
 			 from #t
 		) as x
 
@@ -1641,16 +1638,16 @@ BEGIN
 	begin
 		set @q1 = null -- will resemble '@s1=sum(inc1),@s2=sum(inc2)'
 		set @q2 = null -- will resemble 'cs1=@s1,cs2=@s2'
-		set @sq = null -- will resemble 'declare @s1 decimal(38,19), @s2 decimal(38,19)'
+		set @sq = null -- will resemble 'declare @s1 Decimal(28,12), @s2 Decimal(28,12)'
 		select
-			@sq = isnull(@sq + ',', '') + '@s' + Left(m.cx, 9) + ' decimal(38,19)',
+			@sq = isnull(@sq + ',', '') + '@s' + Left(m.cx, 9) + ' Decimal(28,12)',
 			@q1 = isnull(@q1 + ',', '') + '@s' + Left(m.cx, 9) + '=sum(inc' + Left(m.cx, 9) + ')',
 			@q2 = isnull(@q2 + ',', '') + 'cs' + Left(m.cx, 9) + '=@s' + Left(m.cx, 9)
 				from @meta m order by m.cx
 		set @sq = 'declare ' + @sq + char(10)
 		set @q1 = 'select ' + @q1 + ' from #t where o <= @x' + char(10)
 		set @q2 = 'update #t set ' + @q2 + ' where o = @x'
-	--	declare @s1 decimal(38,19),@s2 decimal(38,19)
+	--	declare @s1 Decimal(28,12),@s2 Decimal(28,12)
 	--	; select @s1=sum(inc1),@s2=sum(inc2) from #t where o <= @x
 	--	; update #t set @s1=sum(inc1),@s2=sum(inc2) where o = @x
 		set @sq = @sq + @q1 + @q2
@@ -1663,8 +1660,8 @@ BEGIN
 	set @cx = 1; set @q1 = ''; set @q2 = ''
 	while (@cx <= @cxMax)
 	begin
-		select	@q1 += ', dbo.fnNumToString(cs'  + Left(@cx, 9) + ') as ['   + m.aTitle + ']',
-				@q2 += ', dbo.fnNumToString(inc' + Left(@cx, 9) + ') as [+ ' + m.aTitle + ']'
+		select	@q1 += ', dbo.NumToString(cs'  + Left(@cx, 9) + ') as ['   + m.aTitle + ']',
+				@q2 += ', dbo.NumToString(inc' + Left(@cx, 9) + ') as [+ ' + m.aTitle + ']'
 			from @meta m where cx = @cx
 		set @cx += 1
 	end
@@ -1696,15 +1693,15 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	declare @pID int; select @pID = ID from [Profile] where AccountTitle = @profileAccountTitle
-	exec ViewTransactionsByProfileID_AccountTitles @pID, @accTitles
+	declare @pId int; select @pId = Id from [Profile] where AccountTitle = @profileAccountTitle
+	exec ViewTransactionsByProfileId_AccountTitles @pId, @accTitles
 END
 GO
 
 /** This sproc is moved to end of SQL script so it SQL Server Management Studio does not yield ..
 	an error message:
 		The module 'PayRentByName' depends on the missing object
-		'ViewAccountTransactionsFor3AccountsByID'. The module will still be created;
+		'ViewAccountTransactionsFor3AccountsById'. The module will still be created;
 		however, it cannot run successfully until the object exists.
 **/
 /****** Object:  StoredProcedure [dbo].[PayRentByName]    Script Date: 2017-04-30 09:50:42 ******/
@@ -1730,28 +1727,28 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	declare @accountID int, @count int, @pID int
-	select @count = count(ID) from [Account] where TitlePart1 = @who
+	declare @accountId int, @count int, @pId int
+	select @count = count(Id) from [Account] where TitlePart1 = @who
 	if @count = 1
-		select @accountID = ID from [Account] where TitlePart1 = @who
+		select @accountId = Id from [Account] where TitlePart1 = @who
 
-	if @accountID is null
+	if @accountId is null
 	begin	-- try full name
-		set @pID = null
-		select @pID = ID from [Profile] p where @who = FirstName + ' ' + LastName
-		if @pID is null
-		select @pID = ID from [Profile] p where @who = FirstNickName + ' ' + LastName
-		if @pID is not null
-		select @accountID = ID from Account where ProfileID = @pID
+		set @pId = null
+		select @pId = Id from [Profile] p where @who = FirstName + ' ' + LastName
+		if @pId is null
+		select @pId = Id from [Profile] p where @who = FirstNickName + ' ' + LastName
+		if @pId is not null
+		select @accountId = Id from Account where ProfileId = @pId
 	end
 
-	if @accountID is null and Len(@who) > 10 and (Left(@who, 10) = 'AccountID:' or Left(@who, 10) = 'AccountID=')
+	if @accountId is null and Len(@who) > 10 and (Left(@who, 10) = 'AccountId:' or Left(@who, 10) = 'AccountId=')
 	begin
 		set @who = RTrim(LTrim(SUBSTRING(@who, 11, Len(@who))))
-		select @accountID = ID from Account where @who = convert(varchar(30), ID)
+		select @accountId = Id from Account where @who = convert(varchar(30), Id)
 	end
 
-	if @accountID is null
+	if @accountId is null
 	begin
 		print 'PayRentByName cannot find any matching Account.'
 		return -100
@@ -1776,15 +1773,15 @@ BEGIN
 		if @postDate is null set @postDate = @now
 	end
 
-	insert into [Tran] (TranTypeID,ToAccountID,ToAmount,FromAccountID,FromAmount,TranDate,PostDate,Note)
-	 select 1 as TranTypeID,@accountID as ToAccountID, @dollarsPaid as ToAmount,
-			null as FromAccountID, null as FromAmount, @tranDate, @postDate, @noteText
+	insert into [Tran] (TranTypeId,ToAccountId,ToAmount,FromAccountId,FromAmount,TranDate,PostDate,Note)
+	 select 1 as TranTypeId,@accountId as ToAccountId, @dollarsPaid as ToAmount,
+			null as FromAccountId, null as FromAmount, @tranDate, @postDate, @noteText
 	if @show <> 0
 	begin
-		select @pID = ProfileID from [Account] where ID = @accountID
-		select * from [Tran] where ToAccountID = @accountID or FromAccountID = @accountID
+		select @pId = ProfileId from [Account] where Id = @accountId
+		select * from [Tran] where ToAccountId = @accountId or FromAccountId = @accountId
 
-		exec ViewAccountTransactionsFor3AccountsByID @pID, 'USD'
+		exec ViewAccountTransactionsFor3AccountsById @pId, 'USD'
 	end
 	else
 	begin
@@ -1795,11 +1792,11 @@ END
 GO
 
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Account ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Account', @level2type=N'COLUMN',@level2name=N'ID'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Account ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Account', @level2type=N'COLUMN',@level2name=N'Id'
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'all transactions are to be rounded to this precision before posting to account. 2 means hundredths or cents for a dollar account. 0 means whole units of the account. -2 means hudreds.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Account', @level2type=N'COLUMN',@level2name=N'Precision'
 GO
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'this ID is a short code for each currency' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Currency', @level2type=N'COLUMN',@level2name=N'ID'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'this ID is a short code for each currency' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Currency', @level2type=N'COLUMN',@level2name=N'Id'
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'(English) currency name' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Currency', @level2type=N'COLUMN',@level2name=N'NameEN'
 GO
@@ -1813,7 +1810,7 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'=' , @level0ty
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Gold has 2 dates per day: 10'' & 15''. Silver has one per day: 12''.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'MarketPrice', @level2type=N'COLUMN',@level2name=N'WhenUTC'
 GO
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Profile ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Profile', @level2type=N'COLUMN',@level2name=N'ID'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Profile ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Profile', @level2type=N'COLUMN',@level2name=N'Id'
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Account Title (for internal purposes)' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Profile', @level2type=N'COLUMN',@level2name=N'UserName'
 GO
@@ -1821,5 +1818,5 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Account Deacti
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Keep DeactivationDate and IsActive in sync' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Profile', @level2type=N'CONSTRAINT',@level2name=N'CK_Profile_IsActive'
 GO
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Transaction ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tran', @level2type=N'COLUMN',@level2name=N'ID'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Transaction ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tran', @level2type=N'COLUMN',@level2name=N'Id'
 GO

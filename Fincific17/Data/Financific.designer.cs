@@ -453,7 +453,7 @@ namespace Fincific17.Data
 		
 		private string _LastName;
 		
-		private string _FirstNickName;
+		private string _NickName;
 		
 		private EntityRef<AspNetUser> _AspNetUser;
 		
@@ -469,8 +469,8 @@ namespace Fincific17.Data
     partial void OnFirstNameChanged();
     partial void OnLastNameChanging(string value);
     partial void OnLastNameChanged();
-    partial void OnFirstNickNameChanging(string value);
-    partial void OnFirstNickNameChanged();
+    partial void OnNickNameChanging(string value);
+    partial void OnNickNameChanged();
     #endregion
 		
 		public Profile()
@@ -563,22 +563,22 @@ namespace Fincific17.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstNickName", DbType="NVarChar(144)")]
-		public string FirstNickName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NickName", DbType="NVarChar(144)")]
+		public string NickName
 		{
 			get
 			{
-				return this._FirstNickName;
+				return this._NickName;
 			}
 			set
 			{
-				if ((this._FirstNickName != value))
+				if ((this._NickName != value))
 				{
-					this.OnFirstNickNameChanging(value);
+					this.OnNickNameChanging(value);
 					this.SendPropertyChanging();
-					this._FirstNickName = value;
-					this.SendPropertyChanged("FirstNickName");
-					this.OnFirstNickNameChanged();
+					this._NickName = value;
+					this.SendPropertyChanged("NickName");
+					this.OnNickNameChanged();
 				}
 			}
 		}

@@ -2,23 +2,23 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Financific">
   <DataContextMoniker Name="/FinancificDataContext" />
   <nestedChildShapes>
-    <classShape Id="8f2ae401-98a5-49ac-90a4-e4c8f59490c6" absoluteBounds="0.75, 1, 2, 3.1170068359375009">
+    <classShape Id="8f2ae401-98a5-49ac-90a4-e4c8f59490c6" absoluteBounds="0.5, 0.5, 2, 3.1170068359375009">
       <DataClassMoniker Name="/FinancificDataContext/AspNetUser" />
       <nestedChildShapes>
-        <elementListCompartment Id="c7ccc805-c9ac-4631-95bc-fe29b09aa4a0" absoluteBounds="0.765, 1.46, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="c7ccc805-c9ac-4631-95bc-fe29b09aa4a0" absoluteBounds="0.515, 0.96, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="dd9bc249-7b51-4b3d-a125-4a3958e00b69" absoluteBounds="3.5, 1, 2, 1.7708968098958331">
+    <classShape Id="cfaff05e-b310-4f8d-b507-2500cabca97f" absoluteBounds="3.125, 0.5, 2, 1.7708968098958331">
       <DataClassMoniker Name="/FinancificDataContext/Profile" />
       <nestedChildShapes>
-        <elementListCompartment Id="3b7cb9ed-ae9b-4a87-a018-8814a6b577ca" absoluteBounds="3.5149999999999997, 1.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="0b43a999-142a-4646-bcea-d103b5b37ded" absoluteBounds="3.1399999999999997, 0.96, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 1.88544840494792); (3.5 : 1.88544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.5 : 1.38544840494792); (3.125 : 1.38544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/FinancificDataContext/AspNetUser/AspNetUser_Profile" />
       <nodes>
         <classShapeMoniker Id="8f2ae401-98a5-49ac-90a4-e4c8f59490c6" />
-        <classShapeMoniker Id="dd9bc249-7b51-4b3d-a125-4a3958e00b69" />
+        <classShapeMoniker Id="cfaff05e-b310-4f8d-b507-2500cabca97f" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>
