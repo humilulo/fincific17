@@ -2,11 +2,24 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Financific">
   <DataContextMoniker Name="/FinancificDataContext" />
   <nestedChildShapes>
-    <classShape Id="907cb1c9-92f2-4f37-b50a-57b5ea90a5cb" absoluteBounds="0.5, 0.5, 2, 1.7708968098958331">
-      <DataClassMoniker Name="/FinancificDataContext/Profile" />
+    <classShape Id="8f2ae401-98a5-49ac-90a4-e4c8f59490c6" absoluteBounds="0.75, 1, 2, 3.1170068359375009">
+      <DataClassMoniker Name="/FinancificDataContext/AspNetUser" />
       <nestedChildShapes>
-        <elementListCompartment Id="4e7335cc-095f-4dc0-b057-a5c591f61702" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="c7ccc805-c9ac-4631-95bc-fe29b09aa4a0" absoluteBounds="0.765, 1.46, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="dd9bc249-7b51-4b3d-a125-4a3958e00b69" absoluteBounds="3.5, 1, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/FinancificDataContext/Profile" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3b7cb9ed-ae9b-4a87-a018-8814a6b577ca" absoluteBounds="3.5149999999999997, 1.46, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 1.88544840494792); (3.5 : 1.88544840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/FinancificDataContext/AspNetUser/AspNetUser_Profile" />
+      <nodes>
+        <classShapeMoniker Id="8f2ae401-98a5-49ac-90a4-e4c8f59490c6" />
+        <classShapeMoniker Id="dd9bc249-7b51-4b3d-a125-4a3958e00b69" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>
