@@ -82,21 +82,13 @@ namespace Fincific17.Data
 		
 		private int _Id;
 		
-		private System.Nullable<System.DateTime> _DeactivationDateUTC;
-		
-		private bool _IsActive;
-		
-		private System.Nullable<long> _AccountNumRoot;
-		
-		private string _AccountTitle;
+		private string _AspNetUserId;
 		
 		private string _FirstName;
 		
 		private string _LastName;
 		
-		private string _FirstNickName;
-		
-		private System.Nullable<long> _UniqueRand;
+		private string _NickName;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -104,22 +96,14 @@ namespace Fincific17.Data
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnDeactivationDateUTCChanging(System.Nullable<System.DateTime> value);
-    partial void OnDeactivationDateUTCChanged();
-    partial void OnIsActiveChanging(bool value);
-    partial void OnIsActiveChanged();
-    partial void OnAccountNumRootChanging(System.Nullable<long> value);
-    partial void OnAccountNumRootChanged();
-    partial void OnAccountTitleChanging(string value);
-    partial void OnAccountTitleChanged();
+    partial void OnAspNetUserIdChanging(string value);
+    partial void OnAspNetUserIdChanged();
     partial void OnFirstNameChanging(string value);
     partial void OnFirstNameChanged();
     partial void OnLastNameChanging(string value);
     partial void OnLastNameChanged();
-    partial void OnFirstNickNameChanging(string value);
-    partial void OnFirstNickNameChanged();
-    partial void OnUniqueRandChanging(System.Nullable<long> value);
-    partial void OnUniqueRandChanged();
+    partial void OnNickNameChanging(string value);
+    partial void OnNickNameChanged();
     #endregion
 		
 		public Profile()
@@ -147,82 +131,22 @@ namespace Fincific17.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DeactivationDateUTC", DbType="SmallDateTime")]
-		public System.Nullable<System.DateTime> DeactivationDateUTC
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AspNetUserId", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string AspNetUserId
 		{
 			get
 			{
-				return this._DeactivationDateUTC;
+				return this._AspNetUserId;
 			}
 			set
 			{
-				if ((this._DeactivationDateUTC != value))
+				if ((this._AspNetUserId != value))
 				{
-					this.OnDeactivationDateUTCChanging(value);
+					this.OnAspNetUserIdChanging(value);
 					this.SendPropertyChanging();
-					this._DeactivationDateUTC = value;
-					this.SendPropertyChanged("DeactivationDateUTC");
-					this.OnDeactivationDateUTCChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsActive", DbType="Bit NOT NULL")]
-		public bool IsActive
-		{
-			get
-			{
-				return this._IsActive;
-			}
-			set
-			{
-				if ((this._IsActive != value))
-				{
-					this.OnIsActiveChanging(value);
-					this.SendPropertyChanging();
-					this._IsActive = value;
-					this.SendPropertyChanged("IsActive");
-					this.OnIsActiveChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountNumRoot", DbType="BigInt")]
-		public System.Nullable<long> AccountNumRoot
-		{
-			get
-			{
-				return this._AccountNumRoot;
-			}
-			set
-			{
-				if ((this._AccountNumRoot != value))
-				{
-					this.OnAccountNumRootChanging(value);
-					this.SendPropertyChanging();
-					this._AccountNumRoot = value;
-					this.SendPropertyChanged("AccountNumRoot");
-					this.OnAccountNumRootChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountTitle", DbType="NVarChar(50)")]
-		public string AccountTitle
-		{
-			get
-			{
-				return this._AccountTitle;
-			}
-			set
-			{
-				if ((this._AccountTitle != value))
-				{
-					this.OnAccountTitleChanging(value);
-					this.SendPropertyChanging();
-					this._AccountTitle = value;
-					this.SendPropertyChanged("AccountTitle");
-					this.OnAccountTitleChanged();
+					this._AspNetUserId = value;
+					this.SendPropertyChanged("AspNetUserId");
+					this.OnAspNetUserIdChanged();
 				}
 			}
 		}
@@ -267,42 +191,22 @@ namespace Fincific17.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstNickName", DbType="NVarChar(144)")]
-		public string FirstNickName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NickName", DbType="NVarChar(144)")]
+		public string NickName
 		{
 			get
 			{
-				return this._FirstNickName;
+				return this._NickName;
 			}
 			set
 			{
-				if ((this._FirstNickName != value))
+				if ((this._NickName != value))
 				{
-					this.OnFirstNickNameChanging(value);
+					this.OnNickNameChanging(value);
 					this.SendPropertyChanging();
-					this._FirstNickName = value;
-					this.SendPropertyChanged("FirstNickName");
-					this.OnFirstNickNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UniqueRand", DbType="BigInt")]
-		public System.Nullable<long> UniqueRand
-		{
-			get
-			{
-				return this._UniqueRand;
-			}
-			set
-			{
-				if ((this._UniqueRand != value))
-				{
-					this.OnUniqueRandChanging(value);
-					this.SendPropertyChanging();
-					this._UniqueRand = value;
-					this.SendPropertyChanged("UniqueRand");
-					this.OnUniqueRandChanged();
+					this._NickName = value;
+					this.SendPropertyChanged("NickName");
+					this.OnNickNameChanged();
 				}
 			}
 		}

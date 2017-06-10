@@ -565,7 +565,6 @@ CREATE TABLE [dbo].[Account](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[ProfileId] [int] NOT NULL,
 --	[Number]  AS (CONVERT([bigint],[dbo].[ModifyTextWithCharsToKeep]([NumStr],'0123456789'),(0))),
-	[AccountId] [int] NOT NULL,
 	AccountName varchar(36) not null,
 	[Title] [nvarchar](50) NOT NULL,
 	[TitlePart1] [nvarchar](12) NOT NULL,
@@ -765,6 +764,7 @@ GO
 SET ANSI_PADDING OFF
 GO
 /****** Object:  Table [dbo].[Profile]    Script Date: 2017-04-30 09:50:42 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -772,16 +772,9 @@ GO
 CREATE TABLE [dbo].[Profile](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[AspNetUserId] [nvarchar](128) NOT NULL,
-	[UserName] [nvarchar](50) NOT NULL,
-	[PassWord] [nvarchar](50) NULL,
-	[DeactivationDateUTC] [smalldatetime] NULL,
-	[IsActive] [bit] NOT NULL,
-	[AccountNumRoot] [bigint] NULL,
-	[AccountTitle] [nvarchar](50) NULL,
 	[FirstName] [nvarchar](144) NULL,
 	[LastName] [nvarchar](144) NULL,
 	[FirstNickName] [nvarchar](144) NULL,
-	[UniqueRand] [bigint] NULL,
  CONSTRAINT [PK_Profile] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
