@@ -43,17 +43,17 @@ namespace Fincific17.Services
 
 		#endregion // Utilities
 
-		public int AddProfile(Domain.Profile profile)
+		public int Add(Domain.Profile newEntity)
 		{
-			Data.Profile newDataProfile = ConvertToDataProfile(profile);
-			int newProfileId = 0;
+			Data.Profile newData = ConvertToDataProfile(newEntity);
+			int newDataId = 0;
 			using (var dc = new Data.FinancificDataContext())
 			{
-				dc.Profiles.InsertOnSubmit(newDataProfile);
+				dc.Profiles.InsertOnSubmit(newData);
 				dc.SubmitChanges();
-				newProfileId = newDataProfile.Id;
+				newDataId = newData.Id;
 			}
-			return newProfileId;
+			return newDataId;
 		}
 
 		/// <summary>Note: when no profile exists with the specified <paramref name="aspNetUserId"/>,
@@ -86,16 +86,16 @@ namespace Fincific17.Services
 			}
 		}
 
-		public void UpdateProfile(Domain.Profile profile)
+		public void Update(Domain.Profile entity)
 		{
-			if (profile.Id == 0) { AddProfile(profile); return; }
+			if (entity.Id == 0) { Add(entity); return; }
 
 			using (var dc = new Data.FinancificDataContext())
 			{
-				Data.Profile u = dc.Profiles.Where(f => f.Id == profile.Id).FirstOrDefault();
-				u.FirstName = profile.FirstName;
-				u.NickName  = profile.NickName;
-				u.LastName  = profile.LastName;
+				Data.Profile u = dc.Profiles.Where(w => w.Id == entity.Id).FirstOrDefault();
+				u.FirstName = entity.FirstName;
+				u.NickName  = entity.NickName;
+				u.LastName  = entity.LastName;
 				dc.SubmitChanges();
 			}
 		}

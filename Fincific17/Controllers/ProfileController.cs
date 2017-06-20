@@ -67,7 +67,7 @@ namespace Fincific17.Controllers
 				p.FirstName = model.FirstName;
 				p.NickName  = model.NickName;
 				p.LastName  = model.LastName;
-				_profileService.UpdateProfile(p);
+				_profileService.Update(p);
 
 				return RedirectToAction("Index", "Manage");
 			}

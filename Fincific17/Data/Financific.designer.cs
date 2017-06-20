@@ -36,6 +36,15 @@ namespace Fincific17.Data
     partial void InsertProfile(Profile instance);
     partial void UpdateProfile(Profile instance);
     partial void DeleteProfile(Profile instance);
+    partial void InsertGlAccountDetail(GlAccountDetail instance);
+    partial void UpdateGlAccountDetail(GlAccountDetail instance);
+    partial void DeleteGlAccountDetail(GlAccountDetail instance);
+    partial void InsertSmPeriodConversion(SmPeriodConversion instance);
+    partial void UpdateSmPeriodConversion(SmPeriodConversion instance);
+    partial void DeleteSmPeriodConversion(SmPeriodConversion instance);
+    partial void InsertGlAccount(GlAccount instance);
+    partial void UpdateGlAccount(GlAccount instance);
+    partial void DeleteGlAccount(GlAccount instance);
     #endregion
 		
 		public FinancificDataContext() : 
@@ -81,6 +90,30 @@ namespace Fincific17.Data
 			get
 			{
 				return this.GetTable<Profile>();
+			}
+		}
+		
+		public System.Data.Linq.Table<GlAccountDetail> GlAccountDetails
+		{
+			get
+			{
+				return this.GetTable<GlAccountDetail>();
+			}
+		}
+		
+		public System.Data.Linq.Table<SmPeriodConversion> SmPeriodConversions
+		{
+			get
+			{
+				return this.GetTable<SmPeriodConversion>();
+			}
+		}
+		
+		public System.Data.Linq.Table<GlAccount> GlAccounts
+		{
+			get
+			{
+				return this.GetTable<GlAccount>();
 			}
 		}
 	}
@@ -635,6 +668,813 @@ namespace Fincific17.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GlAccountDetail")]
+	public partial class GlAccountDetail : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<int> _GlAccountId;
+		
+		private System.Nullable<short> _FiscalYear;
+		
+		private System.Nullable<short> _FiscalPeriod;
+		
+		private System.Nullable<decimal> _Actual;
+		
+		private System.Nullable<decimal> _Budget;
+		
+		private EntityRef<SmPeriodConversion> _SmPeriodConversion;
+		
+		private EntityRef<GlAccount> _GlAccount;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnGlAccountIdChanging(System.Nullable<int> value);
+    partial void OnGlAccountIdChanged();
+    partial void OnFiscalYearChanging(System.Nullable<short> value);
+    partial void OnFiscalYearChanged();
+    partial void OnFiscalPeriodChanging(System.Nullable<short> value);
+    partial void OnFiscalPeriodChanged();
+    partial void OnActualChanging(System.Nullable<decimal> value);
+    partial void OnActualChanged();
+    partial void OnBudgetChanging(System.Nullable<decimal> value);
+    partial void OnBudgetChanged();
+    #endregion
+		
+		public GlAccountDetail()
+		{
+			this._SmPeriodConversion = default(EntityRef<SmPeriodConversion>);
+			this._GlAccount = default(EntityRef<GlAccount>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GlAccountId", DbType="Int")]
+		public System.Nullable<int> GlAccountId
+		{
+			get
+			{
+				return this._GlAccountId;
+			}
+			set
+			{
+				if ((this._GlAccountId != value))
+				{
+					if (this._GlAccount.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnGlAccountIdChanging(value);
+					this.SendPropertyChanging();
+					this._GlAccountId = value;
+					this.SendPropertyChanged("GlAccountId");
+					this.OnGlAccountIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalYear", DbType="SmallInt")]
+		public System.Nullable<short> FiscalYear
+		{
+			get
+			{
+				return this._FiscalYear;
+			}
+			set
+			{
+				if ((this._FiscalYear != value))
+				{
+					if (this._SmPeriodConversion.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFiscalYearChanging(value);
+					this.SendPropertyChanging();
+					this._FiscalYear = value;
+					this.SendPropertyChanged("FiscalYear");
+					this.OnFiscalYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalPeriod", DbType="SmallInt")]
+		public System.Nullable<short> FiscalPeriod
+		{
+			get
+			{
+				return this._FiscalPeriod;
+			}
+			set
+			{
+				if ((this._FiscalPeriod != value))
+				{
+					if (this._SmPeriodConversion.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnFiscalPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._FiscalPeriod = value;
+					this.SendPropertyChanged("FiscalPeriod");
+					this.OnFiscalPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Actual", DbType="Decimal(38,19)")]
+		public System.Nullable<decimal> Actual
+		{
+			get
+			{
+				return this._Actual;
+			}
+			set
+			{
+				if ((this._Actual != value))
+				{
+					this.OnActualChanging(value);
+					this.SendPropertyChanging();
+					this._Actual = value;
+					this.SendPropertyChanged("Actual");
+					this.OnActualChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Budget", DbType="Decimal(38,19)")]
+		public System.Nullable<decimal> Budget
+		{
+			get
+			{
+				return this._Budget;
+			}
+			set
+			{
+				if ((this._Budget != value))
+				{
+					this.OnBudgetChanging(value);
+					this.SendPropertyChanging();
+					this._Budget = value;
+					this.SendPropertyChanged("Budget");
+					this.OnBudgetChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmPeriodConversion_GlAccountDetail", Storage="_SmPeriodConversion", ThisKey="FiscalYear,FiscalPeriod", OtherKey="FiscalYear,FiscalPeriod", IsForeignKey=true)]
+		public SmPeriodConversion SmPeriodConversion
+		{
+			get
+			{
+				return this._SmPeriodConversion.Entity;
+			}
+			set
+			{
+				SmPeriodConversion previousValue = this._SmPeriodConversion.Entity;
+				if (((previousValue != value) 
+							|| (this._SmPeriodConversion.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._SmPeriodConversion.Entity = null;
+						previousValue.GlAccountDetails.Remove(this);
+					}
+					this._SmPeriodConversion.Entity = value;
+					if ((value != null))
+					{
+						value.GlAccountDetails.Add(this);
+						this._FiscalYear = value.FiscalYear;
+						this._FiscalPeriod = value.FiscalPeriod;
+					}
+					else
+					{
+						this._FiscalYear = default(Nullable<short>);
+						this._FiscalPeriod = default(Nullable<short>);
+					}
+					this.SendPropertyChanged("SmPeriodConversion");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GlAccount_GlAccountDetail", Storage="_GlAccount", ThisKey="GlAccountId", OtherKey="Id", IsForeignKey=true)]
+		public GlAccount GlAccount
+		{
+			get
+			{
+				return this._GlAccount.Entity;
+			}
+			set
+			{
+				GlAccount previousValue = this._GlAccount.Entity;
+				if (((previousValue != value) 
+							|| (this._GlAccount.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._GlAccount.Entity = null;
+						previousValue.GlAccountDetails.Remove(this);
+					}
+					this._GlAccount.Entity = value;
+					if ((value != null))
+					{
+						value.GlAccountDetails.Add(this);
+						this._GlAccountId = value.Id;
+					}
+					else
+					{
+						this._GlAccountId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("GlAccount");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SmPeriodConversion")]
+	public partial class SmPeriodConversion : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Nullable<short> _FiscalYear;
+		
+		private System.Nullable<short> _FiscalPeriod;
+		
+		private System.Nullable<System.DateTime> _FromDate;
+		
+		private System.Nullable<System.DateTime> _ThruDate;
+		
+		private System.Nullable<bool> _GlClosed;
+		
+		private System.Nullable<bool> _ApClosed;
+		
+		private System.Nullable<bool> _ArClosed;
+		
+		private EntitySet<GlAccountDetail> _GlAccountDetails;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnFiscalYearChanging(System.Nullable<short> value);
+    partial void OnFiscalYearChanged();
+    partial void OnFiscalPeriodChanging(System.Nullable<short> value);
+    partial void OnFiscalPeriodChanged();
+    partial void OnFromDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnFromDateChanged();
+    partial void OnThruDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnThruDateChanged();
+    partial void OnGlClosedChanging(System.Nullable<bool> value);
+    partial void OnGlClosedChanged();
+    partial void OnApClosedChanging(System.Nullable<bool> value);
+    partial void OnApClosedChanged();
+    partial void OnArClosedChanging(System.Nullable<bool> value);
+    partial void OnArClosedChanged();
+    #endregion
+		
+		public SmPeriodConversion()
+		{
+			this._GlAccountDetails = new EntitySet<GlAccountDetail>(new Action<GlAccountDetail>(this.attach_GlAccountDetails), new Action<GlAccountDetail>(this.detach_GlAccountDetails));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalYear", DbType="SmallInt")]
+		public System.Nullable<short> FiscalYear
+		{
+			get
+			{
+				return this._FiscalYear;
+			}
+			set
+			{
+				if ((this._FiscalYear != value))
+				{
+					this.OnFiscalYearChanging(value);
+					this.SendPropertyChanging();
+					this._FiscalYear = value;
+					this.SendPropertyChanged("FiscalYear");
+					this.OnFiscalYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalPeriod", DbType="SmallInt")]
+		public System.Nullable<short> FiscalPeriod
+		{
+			get
+			{
+				return this._FiscalPeriod;
+			}
+			set
+			{
+				if ((this._FiscalPeriod != value))
+				{
+					this.OnFiscalPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._FiscalPeriod = value;
+					this.SendPropertyChanged("FiscalPeriod");
+					this.OnFiscalPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FromDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> FromDate
+		{
+			get
+			{
+				return this._FromDate;
+			}
+			set
+			{
+				if ((this._FromDate != value))
+				{
+					this.OnFromDateChanging(value);
+					this.SendPropertyChanging();
+					this._FromDate = value;
+					this.SendPropertyChanged("FromDate");
+					this.OnFromDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThruDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ThruDate
+		{
+			get
+			{
+				return this._ThruDate;
+			}
+			set
+			{
+				if ((this._ThruDate != value))
+				{
+					this.OnThruDateChanging(value);
+					this.SendPropertyChanging();
+					this._ThruDate = value;
+					this.SendPropertyChanged("ThruDate");
+					this.OnThruDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GlClosed", DbType="Bit")]
+		public System.Nullable<bool> GlClosed
+		{
+			get
+			{
+				return this._GlClosed;
+			}
+			set
+			{
+				if ((this._GlClosed != value))
+				{
+					this.OnGlClosedChanging(value);
+					this.SendPropertyChanging();
+					this._GlClosed = value;
+					this.SendPropertyChanged("GlClosed");
+					this.OnGlClosedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApClosed", DbType="Bit")]
+		public System.Nullable<bool> ApClosed
+		{
+			get
+			{
+				return this._ApClosed;
+			}
+			set
+			{
+				if ((this._ApClosed != value))
+				{
+					this.OnApClosedChanging(value);
+					this.SendPropertyChanging();
+					this._ApClosed = value;
+					this.SendPropertyChanged("ApClosed");
+					this.OnApClosedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ArClosed", DbType="Bit")]
+		public System.Nullable<bool> ArClosed
+		{
+			get
+			{
+				return this._ArClosed;
+			}
+			set
+			{
+				if ((this._ArClosed != value))
+				{
+					this.OnArClosedChanging(value);
+					this.SendPropertyChanging();
+					this._ArClosed = value;
+					this.SendPropertyChanged("ArClosed");
+					this.OnArClosedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SmPeriodConversion_GlAccountDetail", Storage="_GlAccountDetails", ThisKey="FiscalYear,FiscalPeriod", OtherKey="FiscalYear,FiscalPeriod")]
+		public EntitySet<GlAccountDetail> GlAccountDetails
+		{
+			get
+			{
+				return this._GlAccountDetails;
+			}
+			set
+			{
+				this._GlAccountDetails.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_GlAccountDetails(GlAccountDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.SmPeriodConversion = this;
+		}
+		
+		private void detach_GlAccountDetails(GlAccountDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.SmPeriodConversion = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GlAccount")]
+	public partial class GlAccount : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Number;
+		
+		private string _Description;
+		
+		private System.Nullable<int> _AccountTypeId;
+		
+		private System.Nullable<int> _BalanceTypeId;
+		
+		private System.Nullable<int> _ConsolidateToAccountId;
+		
+		private EntitySet<GlAccountDetail> _GlAccountDetails;
+		
+		private EntitySet<GlAccount> _GlAccounts;
+		
+		private EntityRef<GlAccount> _GlAccount1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNumberChanging(string value);
+    partial void OnNumberChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnAccountTypeIdChanging(System.Nullable<int> value);
+    partial void OnAccountTypeIdChanged();
+    partial void OnBalanceTypeIdChanging(System.Nullable<int> value);
+    partial void OnBalanceTypeIdChanged();
+    partial void OnConsolidateToAccountIdChanging(System.Nullable<int> value);
+    partial void OnConsolidateToAccountIdChanged();
+    #endregion
+		
+		public GlAccount()
+		{
+			this._GlAccountDetails = new EntitySet<GlAccountDetail>(new Action<GlAccountDetail>(this.attach_GlAccountDetails), new Action<GlAccountDetail>(this.detach_GlAccountDetails));
+			this._GlAccounts = new EntitySet<GlAccount>(new Action<GlAccount>(this.attach_GlAccounts), new Action<GlAccount>(this.detach_GlAccounts));
+			this._GlAccount1 = default(EntityRef<GlAccount>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Number", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Number
+		{
+			get
+			{
+				return this._Number;
+			}
+			set
+			{
+				if ((this._Number != value))
+				{
+					this.OnNumberChanging(value);
+					this.SendPropertyChanging();
+					this._Number = value;
+					this.SendPropertyChanged("Number");
+					this.OnNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(50)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountTypeId", DbType="Int")]
+		public System.Nullable<int> AccountTypeId
+		{
+			get
+			{
+				return this._AccountTypeId;
+			}
+			set
+			{
+				if ((this._AccountTypeId != value))
+				{
+					this.OnAccountTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._AccountTypeId = value;
+					this.SendPropertyChanged("AccountTypeId");
+					this.OnAccountTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceTypeId", DbType="Int")]
+		public System.Nullable<int> BalanceTypeId
+		{
+			get
+			{
+				return this._BalanceTypeId;
+			}
+			set
+			{
+				if ((this._BalanceTypeId != value))
+				{
+					this.OnBalanceTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._BalanceTypeId = value;
+					this.SendPropertyChanged("BalanceTypeId");
+					this.OnBalanceTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConsolidateToAccountId", DbType="Int")]
+		public System.Nullable<int> ConsolidateToAccountId
+		{
+			get
+			{
+				return this._ConsolidateToAccountId;
+			}
+			set
+			{
+				if ((this._ConsolidateToAccountId != value))
+				{
+					if (this._GlAccount1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnConsolidateToAccountIdChanging(value);
+					this.SendPropertyChanging();
+					this._ConsolidateToAccountId = value;
+					this.SendPropertyChanged("ConsolidateToAccountId");
+					this.OnConsolidateToAccountIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GlAccount_GlAccountDetail", Storage="_GlAccountDetails", ThisKey="Id", OtherKey="GlAccountId")]
+		public EntitySet<GlAccountDetail> GlAccountDetails
+		{
+			get
+			{
+				return this._GlAccountDetails;
+			}
+			set
+			{
+				this._GlAccountDetails.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GlAccount_GlAccount", Storage="_GlAccounts", ThisKey="Id", OtherKey="ConsolidateToAccountId")]
+		public EntitySet<GlAccount> GlAccounts
+		{
+			get
+			{
+				return this._GlAccounts;
+			}
+			set
+			{
+				this._GlAccounts.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GlAccount_GlAccount", Storage="_GlAccount1", ThisKey="ConsolidateToAccountId", OtherKey="Id", IsForeignKey=true)]
+		public GlAccount GlAccount1
+		{
+			get
+			{
+				return this._GlAccount1.Entity;
+			}
+			set
+			{
+				GlAccount previousValue = this._GlAccount1.Entity;
+				if (((previousValue != value) 
+							|| (this._GlAccount1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._GlAccount1.Entity = null;
+						previousValue.GlAccounts.Remove(this);
+					}
+					this._GlAccount1.Entity = value;
+					if ((value != null))
+					{
+						value.GlAccounts.Add(this);
+						this._ConsolidateToAccountId = value.Id;
+					}
+					else
+					{
+						this._ConsolidateToAccountId = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("GlAccount1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_GlAccountDetails(GlAccountDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.GlAccount = this;
+		}
+		
+		private void detach_GlAccountDetails(GlAccountDetail entity)
+		{
+			this.SendPropertyChanging();
+			entity.GlAccount = null;
+		}
+		
+		private void attach_GlAccounts(GlAccount entity)
+		{
+			this.SendPropertyChanging();
+			entity.GlAccount1 = this;
+		}
+		
+		private void detach_GlAccounts(GlAccount entity)
+		{
+			this.SendPropertyChanging();
+			entity.GlAccount1 = null;
 		}
 	}
 }

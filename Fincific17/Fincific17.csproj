@@ -191,6 +191,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\GlAccountController.cs" />
     <Compile Include="Data\App_Start\BundleConfig.cs" />
     <Compile Include="Data\App_Start\FilterConfig.cs" />
     <Compile Include="Data\App_Start\IdentityConfig.cs" />
@@ -208,15 +209,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Financific.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Domain\AccountType.cs" />
+    <Compile Include="Domain\BalanceType.cs" />
+    <Compile Include="Domain\GlAccount.cs" />
     <Compile Include="Domain\Profile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\GlAccountListModel.cs" />
+    <Compile Include="Models\GlAccountModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GlAccountService.cs" />
     <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -287,6 +294,8 @@
     <Content Include="Views\Profile\Details.cshtml" />
     <Content Include="Views\Profile\Edit.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\GlAccount\Index.cshtml" />
+    <Content Include="Views\GlAccount\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

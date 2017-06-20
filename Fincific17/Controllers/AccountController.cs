@@ -168,7 +168,7 @@ namespace Fincific17.Controllers
 						FirstName = model.FirstName,
 						LastName = model.LastName,
 					};
-					int newProfileId = _profileService.AddProfile(newProfile);
+					int newProfileId = _profileService.Add(newProfile);
 					if (newProfileId == 0) { throw new Exception("Unable to create new Profile."); }
 
 					// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
