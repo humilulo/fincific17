@@ -31,6 +31,5 @@ namespace Fincific17.Models
             return new ApplicationDbContext();
         }
 
-		public System.Data.Entity.DbSet<Fincific17.Models.GlAccountModel> GlAccountModels { get; set; }
 	}
 }
