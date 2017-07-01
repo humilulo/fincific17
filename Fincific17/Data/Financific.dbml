@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="finDev4" Class="FinancificDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=lin.arvixe.com;Initial Catalog=finDev4;User ID=FinDev" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=lin.arvixe.com;Initial Catalog=finDev4;Persist Security Info=True;User ID=FinDev" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="finDev4ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AspNetUsers" Member="AspNetUsers">
     <Type Name="AspNetUser">
       <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -27,6 +27,19 @@
       <Association Name="AspNetUser_Profile" Member="AspNetUser" ThisKey="AspNetUserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.GlAccount" Member="GlAccounts">
+    <Type Name="GlAccount">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Number" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="AccountTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BalanceTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ConsolidateToAccountId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="GlAccount_GlAccount" Member="GlAccounts" ThisKey="Id" OtherKey="ConsolidateToAccountId" Type="GlAccount" />
+      <Association Name="GlAccount_GlAccountDetail" Member="GlAccountDetails" ThisKey="Id" OtherKey="GlAccountId" Type="GlAccountDetail" />
+      <Association Name="GlAccount_GlAccount" Member="GlAccount1" ThisKey="ConsolidateToAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.GlAccountDetail" Member="GlAccountDetails">
     <Type Name="GlAccountDetail">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -35,8 +48,8 @@
       <Column Name="FiscalPeriod" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
       <Column Name="Actual" Type="System.Decimal" DbType="Decimal(38,19)" CanBeNull="true" />
       <Column Name="Budget" Type="System.Decimal" DbType="Decimal(38,19)" CanBeNull="true" />
-      <Association Name="SmPeriodConversion_GlAccountDetail" Member="SmPeriodConversion" ThisKey="FiscalYear,FiscalPeriod" OtherKey="FiscalYear,FiscalPeriod" Type="SmPeriodConversion" IsForeignKey="true" />
       <Association Name="GlAccount_GlAccountDetail" Member="GlAccount" ThisKey="GlAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
+      <Association Name="SmPeriodConversion_GlAccountDetail" Member="SmPeriodConversion" ThisKey="FiscalYear,FiscalPeriod" OtherKey="FiscalYear,FiscalPeriod" Type="SmPeriodConversion" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SmPeriodConversion" Member="SmPeriodConversions">
@@ -50,19 +63,6 @@
       <Column Name="ApClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="ArClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="SmPeriodConversion_GlAccountDetail" Member="GlAccountDetails" ThisKey="FiscalYear,FiscalPeriod" OtherKey="FiscalYear,FiscalPeriod" Type="GlAccountDetail" />
-    </Type>
-  </Table>
-  <Table Name="dbo.GlAccount" Member="GlAccounts">
-    <Type Name="GlAccount">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Number" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="AccountTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BalanceTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ConsolidateToAccountId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="GlAccount_GlAccountDetail" Member="GlAccountDetails" ThisKey="Id" OtherKey="GlAccountId" Type="GlAccountDetail" />
-      <Association Name="GlAccount_GlAccount" Member="GlAccounts" ThisKey="Id" OtherKey="ConsolidateToAccountId" Type="GlAccount" />
-      <Association Name="GlAccount_GlAccount" Member="GlAccount1" ThisKey="ConsolidateToAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

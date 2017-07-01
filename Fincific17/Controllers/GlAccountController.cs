@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using System.Collections.Specialized; // for NameValueCollection
+
 using Fincific17.Models;
 using Fincific17.Services;
 
@@ -19,6 +21,32 @@ namespace Fincific17.Controllers
 		}
 
 		#region Utility
+
+		private Domain.GlAccount BuildDomainGlAccount(NameValueCollection collection)
+		{
+			var r = new Domain.GlAccount()
+			{
+				Id = 0,
+				Number = collection["Number"],
+				Description = collection["Description"]
+			};
+
+			int cId; if (int.TryParse(collection["Id"], out cId)) { r.Id = cId; }
+
+			int accountTypeId;
+			if (int.TryParse(collection["AccountType"], out accountTypeId))
+			{
+				r.AccountType = (Domain.AccountType)accountTypeId;
+			}
+
+			int balanceTypeId;
+			if (int.TryParse(collection["BalanceType"], out balanceTypeId))
+			{
+				r.BalanceType = (Domain.BalanceType)balanceTypeId;
+			}
+
+			return r;
+		} // private Domain.GlAccount BuildDomainGlAccount(NameValueCollection collection)
 
 		private GlAccountListModel PrepareGlAccountListModel(List<Domain.GlAccount> models)
 		{
@@ -71,24 +99,7 @@ namespace Fincific17.Controllers
         {
             try
             {
-				var glAccount = new Domain.GlAccount()
-				{
-					Id = 0,
-					Number = collection["Number"],
-					Description = collection["Description"]
-				};
-
-				int accountTypeId;
-				if (int.TryParse(collection["AccountType"], out accountTypeId))
-				{
-					glAccount.AccountType = (Domain.AccountType)accountTypeId;
-				}
-
-				int balanceTypeId;
-				if (int.TryParse(collection["BalanceType"], out balanceTypeId))
-				{
-					glAccount.BalanceType = (Domain.BalanceType)balanceTypeId;
-				}
+				var glAccount = BuildDomainGlAccount(collection);
 
 				_glAccountService.Add(glAccount);
 

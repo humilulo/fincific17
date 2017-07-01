@@ -7,6 +7,11 @@ namespace Fincific17.Services
 {
 	public class GlAccountService
 	{
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="domn">domn = DOMaiN</param>
+		/// <returns></returns>
 		private Data.GlAccount ConvertToDataGlAccount(Domain.GlAccount domn)
 		{
 			if (domn == null) { return null; }
