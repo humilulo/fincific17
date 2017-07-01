@@ -7,7 +7,7 @@ namespace Fincific17.Services
 {
 	public class SystemService
 	{
-		private Data.GlAccount ConvertToDataPeriodConversion(Domain.PeriodConversion domn)
+		private Data.SmPeriodConversion ConvertToDataPeriodConversion(Domain.PeriodConversion domn)
 		{
 			if (domn == null) { return null; }
 			return new Data.SmPeriodConversion()
