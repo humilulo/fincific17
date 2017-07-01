@@ -44,8 +44,8 @@
     <Type Name="GlAccountDetail">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="GlAccountId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="FiscalYear" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
-      <Column Name="FiscalPeriod" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="FiscalYear" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FiscalPeriod" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Actual" Type="System.Decimal" DbType="Decimal(38,19)" CanBeNull="true" />
       <Column Name="Budget" Type="System.Decimal" DbType="Decimal(38,19)" CanBeNull="true" />
       <Association Name="GlAccount_GlAccountDetail" Member="GlAccount" ThisKey="GlAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
@@ -55,8 +55,8 @@
   <Table Name="dbo.SmPeriodConversion" Member="SmPeriodConversions">
     <Type Name="SmPeriodConversion">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="FiscalYear" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
-      <Column Name="FiscalPeriod" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="FiscalYear" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FiscalPeriod" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="FromDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="ThruDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="GlClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />

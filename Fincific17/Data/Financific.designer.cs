@@ -960,9 +960,9 @@ namespace Fincific17.Data
 		
 		private System.Nullable<int> _GlAccountId;
 		
-		private System.Nullable<short> _FiscalYear;
+		private System.Nullable<int> _FiscalYear;
 		
-		private System.Nullable<short> _FiscalPeriod;
+		private System.Nullable<int> _FiscalPeriod;
 		
 		private System.Nullable<decimal> _Actual;
 		
@@ -980,9 +980,9 @@ namespace Fincific17.Data
     partial void OnIdChanged();
     partial void OnGlAccountIdChanging(System.Nullable<int> value);
     partial void OnGlAccountIdChanged();
-    partial void OnFiscalYearChanging(System.Nullable<short> value);
+    partial void OnFiscalYearChanging(System.Nullable<int> value);
     partial void OnFiscalYearChanged();
-    partial void OnFiscalPeriodChanging(System.Nullable<short> value);
+    partial void OnFiscalPeriodChanging(System.Nullable<int> value);
     partial void OnFiscalPeriodChanged();
     partial void OnActualChanging(System.Nullable<decimal> value);
     partial void OnActualChanged();
@@ -1041,8 +1041,8 @@ namespace Fincific17.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalYear", DbType="SmallInt")]
-		public System.Nullable<short> FiscalYear
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalYear", DbType="Int")]
+		public System.Nullable<int> FiscalYear
 		{
 			get
 			{
@@ -1065,8 +1065,8 @@ namespace Fincific17.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalPeriod", DbType="SmallInt")]
-		public System.Nullable<short> FiscalPeriod
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalPeriod", DbType="Int")]
+		public System.Nullable<int> FiscalPeriod
 		{
 			get
 			{
@@ -1191,8 +1191,8 @@ namespace Fincific17.Data
 					}
 					else
 					{
-						this._FiscalYear = default(Nullable<short>);
-						this._FiscalPeriod = default(Nullable<short>);
+						this._FiscalYear = default(Nullable<int>);
+						this._FiscalPeriod = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("SmPeriodConversion");
 				}
@@ -1228,9 +1228,9 @@ namespace Fincific17.Data
 		
 		private int _Id;
 		
-		private System.Nullable<short> _FiscalYear;
+		private System.Nullable<int> _FiscalYear;
 		
-		private System.Nullable<short> _FiscalPeriod;
+		private System.Nullable<int> _FiscalPeriod;
 		
 		private System.Nullable<System.DateTime> _FromDate;
 		
@@ -1250,9 +1250,9 @@ namespace Fincific17.Data
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnFiscalYearChanging(System.Nullable<short> value);
+    partial void OnFiscalYearChanging(System.Nullable<int> value);
     partial void OnFiscalYearChanged();
-    partial void OnFiscalPeriodChanging(System.Nullable<short> value);
+    partial void OnFiscalPeriodChanging(System.Nullable<int> value);
     partial void OnFiscalPeriodChanged();
     partial void OnFromDateChanging(System.Nullable<System.DateTime> value);
     partial void OnFromDateChanged();
@@ -1292,8 +1292,8 @@ namespace Fincific17.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalYear", DbType="SmallInt")]
-		public System.Nullable<short> FiscalYear
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalYear", DbType="Int")]
+		public System.Nullable<int> FiscalYear
 		{
 			get
 			{
@@ -1312,8 +1312,8 @@ namespace Fincific17.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalPeriod", DbType="SmallInt")]
-		public System.Nullable<short> FiscalPeriod
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FiscalPeriod", DbType="Int")]
+		public System.Nullable<int> FiscalPeriod
 		{
 			get
 			{
