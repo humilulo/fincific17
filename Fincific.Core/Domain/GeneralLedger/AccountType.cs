@@ -1,4 +1,4 @@
-﻿namespace Fincific17.Domain
+﻿namespace Fincific.Core.Domain.GeneralLedger
 {
 	public enum AccountType
 	{

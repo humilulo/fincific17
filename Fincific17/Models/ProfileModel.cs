@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-using Fincific17.Data;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fincific17.Models

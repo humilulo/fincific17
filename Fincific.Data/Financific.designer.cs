@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Fincific17.Data
+namespace Fincific.Data
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -48,7 +48,7 @@ namespace Fincific17.Data
     #endregion
 		
 		public FinancificDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["finDev4ConnectionString"].ConnectionString, mappingSource)
+				base(global::Fincific.Data.Properties.Settings.Default.finDev4ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

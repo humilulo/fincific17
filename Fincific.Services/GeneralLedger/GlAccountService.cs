@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Data=Fincific.Data;
+using Domain = Fincific.Core.Domain;
 
-namespace Fincific17.Services
+
+namespace Fincific.Services.GeneralLedger
 {
 	public class GlAccountService
 	{
@@ -12,7 +15,7 @@ namespace Fincific17.Services
 		/// </summary>
 		/// <param name="domn">domn = DOMaiN</param>
 		/// <returns></returns>
-		private Data.GlAccount ConvertToDataGlAccount(Domain.GlAccount domn)
+		private Data.GlAccount ConvertToDataGlAccount(Domain.GeneralLedger.GlAccount domn)
 		{
 			if (domn == null) { return null; }
 			return new Data.GlAccount()
@@ -27,21 +30,21 @@ namespace Fincific17.Services
 			};
 		}
 
-		private Domain.GlAccount ConvertToDomainGlAccount(Data.GlAccount data)
+		private Domain.GeneralLedger.GlAccount ConvertToDomainGlAccount(Data.GlAccount data)
 		{
 			if (data == null) { return null; }
-			return new Domain.GlAccount()
+			return new Domain.GeneralLedger.GlAccount()
 			{
 				Id = data.Id,
 				Number = data.Number,
 				Description = data.Description,
-				AccountType = (Domain.AccountType)data.AccountTypeId,
-				BalanceType = (Domain.BalanceType)data.BalanceTypeId,
+				AccountType = (Domain.GeneralLedger.AccountType)data.AccountTypeId,
+				BalanceType = (Domain.GeneralLedger.BalanceType)data.BalanceTypeId,
 				ConsolToAccount = GetGlAccountById(data.ConsolidateToAccountId ?? 0),
 			};
 		}
 
-		public List<Domain.GlAccount> GetAll()
+		public List<Domain.GeneralLedger.GlAccount> GetAll()
 		{
 			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
 			{
@@ -49,7 +52,7 @@ namespace Fincific17.Services
 			}
 		}
 
-		public Domain.GlAccount GetGlAccountById(int id)
+		public Domain.GeneralLedger.GlAccount GetGlAccountById(int id)
 		{
 			if (id == 0) { return null; }
 			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
@@ -58,7 +61,7 @@ namespace Fincific17.Services
 			}
 		}
 
-		public int Add(Domain.GlAccount newEntity)
+		public int Add(Domain.GeneralLedger.GlAccount newEntity)
 		{
 			Data.GlAccount newData = ConvertToDataGlAccount(newEntity);
 			int newDataId = 0;
@@ -71,7 +74,7 @@ namespace Fincific17.Services
 			return newDataId;
 		}
 
-		public void Update(Domain.GlAccount entity)
+		public void Update(Domain.GeneralLedger.GlAccount entity)
 		{
 			if (entity.Id == 0) { Add(entity); return; }
 

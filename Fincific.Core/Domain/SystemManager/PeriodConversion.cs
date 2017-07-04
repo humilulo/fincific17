@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Fincific17.Domain
+namespace Fincific.Core.Domain.SystemManager
 {
-	public class PeriodConversion
+	public partial class PeriodConversion : BaseEntity
 	{
-		public int Id { get; set; }
 		public int FiscalYear { get; set; }
 		public int FiscalPeriod { get; set; }
         public DateTime FromDate { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Fincific17.Domain
+namespace Fincific.Core.Domain.GeneralLedger
 {
 	public enum BalanceType
 	{

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Fincific17.Domain
+namespace Fincific.Core.Domain.GeneralLedger
 {
-	public class GlAccount
+	public partial class GlAccount : BaseEntity
 	{
-		public int Id { get; set; }
 		public string Number { get; set; }
 		public string Description { get; set; }
 		public AccountType AccountType { get; set; }

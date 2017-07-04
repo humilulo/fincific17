@@ -10,7 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Fincific17.Models;
 
-using Fincific17.Services;
+using Fincific.Services.SystemManager;
+using Domain=Fincific.Core.Domain;
 
 namespace Fincific17.Controllers
 {
@@ -162,7 +163,7 @@ namespace Fincific17.Controllers
 				{
 					await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 					string aspNetUserId = user.Id;
-					var newProfile = new Domain.Profile()
+					var newProfile = new Domain.SystemManager.Profile()
 					{
 						AspNetUserId = aspNetUserId,
 						FirstName = model.FirstName,

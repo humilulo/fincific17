@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Data = Fincific.Data;
+using Domain = Fincific.Core.Domain;
 
-namespace Fincific17.Services
+namespace Fincific.Services.SystemManager
 {
 	public class SystemService
 	{
-		private Data.SmPeriodConversion ConvertToDataPeriodConversion(Domain.PeriodConversion domn)
+		private Data.SmPeriodConversion ConvertToDataPeriodConversion(Domain.SystemManager.PeriodConversion domn)
 		{
 			if (domn == null) { return null; }
 			return new Data.SmPeriodConversion()
@@ -23,10 +25,10 @@ namespace Fincific17.Services
 			};
 		}
 
-		private Domain.PeriodConversion ConvertToDomainPeriodConversion(Data.SmPeriodConversion data)
+		private Domain.SystemManager.PeriodConversion ConvertToDomainPeriodConversion(Data.SmPeriodConversion data)
 		{
 			if (data == null) { return null; }
-			return new Domain.PeriodConversion()
+			return new Domain.SystemManager.PeriodConversion()
 			{
                 Id = data.Id,
                 FiscalYear = data.FiscalYear ?? 0,
@@ -39,7 +41,7 @@ namespace Fincific17.Services
             };
 		}
 
-		public List<Domain.PeriodConversion> GetAll()
+		public List<Domain.SystemManager.PeriodConversion> GetAll()
 		{
 			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
 			{
@@ -47,7 +49,24 @@ namespace Fincific17.Services
 			}
 		}
 
-		public Domain.PeriodConversion GetPeriodConversionById(int id)
+        public List<int> GetAvailableYears()
+        {
+            using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
+            {
+                return dc.SmPeriodConversions.Select(s=>s.FiscalYear ?? 0).Distinct().ToList();
+            }
+        }
+
+        public IEnumerable<Domain.SystemManager.PeriodConversion> GetPeriodConversionByYear(int fiscalYear)
+        {
+            using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
+            {
+                return dc.SmPeriodConversions.Where(w => w.FiscalYear == fiscalYear).Select(ConvertToDomainPeriodConversion);
+          }
+        }
+
+
+        public Domain.SystemManager.PeriodConversion GetPeriodConversionById(int id)
 		{
 			if (id == 0) { return null; }
 			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
@@ -56,7 +75,7 @@ namespace Fincific17.Services
 			}
 		}
 
-		public int Add(Domain.PeriodConversion newEntity)
+		public int Add(Domain.SystemManager.PeriodConversion newEntity)
 		{
 			Data.SmPeriodConversion newData = ConvertToDataPeriodConversion(newEntity);
 			int newDataId = 0;
@@ -69,7 +88,7 @@ namespace Fincific17.Services
 			return newDataId;
 		}
 
-		public void Update(Domain.PeriodConversion entity)
+		public void Update(Domain.SystemManager.PeriodConversion entity)
 		{
 			if (entity.Id == 0) { Add(entity); return; }
 

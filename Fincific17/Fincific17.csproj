@@ -202,19 +202,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
-    <Compile Include="Data\Financific.cs">
-      <DependentUpon>Financific.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="Data\Financific.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Financific.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="Domain\AccountType.cs" />
-    <Compile Include="Domain\BalanceType.cs" />
-    <Compile Include="Domain\PeriodConversion.cs" />
-    <Compile Include="Domain\GlAccount.cs" />
-    <Compile Include="Domain\Profile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -227,9 +214,6 @@
     <Compile Include="Models\PeriodConversionModel.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SystemService.cs" />
-    <Compile Include="Services\GlAccountService.cs" />
-    <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -243,11 +227,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\Financific.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Financific.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -318,9 +297,18 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Financific.dbml.layout">
-      <DependentUpon>Financific.dbml</DependentUpon>
-    </None>
+    <ProjectReference Include="..\Fincific.Core\Fincific.Core.csproj">
+      <Project>{471864d1-6cc6-4a59-9447-8ccf1761f635}</Project>
+      <Name>Fincific.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fincific.Data\Fincific.Data.csproj">
+      <Project>{0b3aeb6a-d289-4ff5-b9b4-c3c2c20b730c}</Project>
+      <Name>Fincific.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fincific.Services\Fincific.Services.csproj">
+      <Project>{55011424-5b41-48c6-81cc-36a8cbda8b54}</Project>
+      <Name>Fincific.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

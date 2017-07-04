@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Fincific17.Domain
+namespace Fincific.Core.Domain.SystemManager
 {
-	public class Profile
+	public partial class Profile : BaseEntity
 	{
-		public int Id { get; set; }
 		public string AspNetUserId { get; set; }
 		public string FirstName { get; set; }
 		public string NickName { get; set; }

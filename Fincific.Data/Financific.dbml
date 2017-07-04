@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="finDev4" Class="FinancificDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=lin.arvixe.com;Initial Catalog=finDev4;Persist Security Info=True;User ID=FinDev" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="finDev4ConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="finDev4" EntityNamespace="Fincific.Data" ContextNamespace="Fincific.Data" Class="FinancificDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=lin.arvixe.com;Initial Catalog=finDev4;Persist Security Info=True;User ID=FinDev" SettingsObjectName="Fincific.Data.Properties.Settings" SettingsPropertyName="finDev4ConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AspNetUsers" Member="AspNetUsers">
     <Type Name="AspNetUser">
       <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
+using Data = Fincific.Data;
+using Domain = Fincific.Core.Domain;
 //using Fincific17;
 
-namespace Fincific17.Services
+namespace Fincific.Services.SystemManager
 {
 	public class ProfileService
 	{
@@ -13,7 +14,7 @@ namespace Fincific17.Services
 
 		/// <summary>Convert from ProfileModel to Profile.</summary>
 		/// <param name="pm">The ProfileModel that gets implicitly converted to a Profile class.</param>
-		private static Data.Profile ConvertToDataProfile(Domain.Profile p)
+		private static Data.Profile ConvertToDataProfile(Domain.SystemManager.Profile p)
 		{
 			if (p == null) { return null; }
 			return new Data.Profile()
@@ -26,12 +27,12 @@ namespace Fincific17.Services
 			};
 		}
 
-		/// <summary>Convert from Data.Profile to Domain.Profile.</summary>
-		/// <param name="p">The Data.Profile class that gets implicitly converted to a Domain.Profile class.</param>
-		private static Domain.Profile ConvertToDomainProfile(Data.Profile p)
+		/// <summary>Convert from Data.Profile to Domain.SystemManager.Profile.</summary>
+		/// <param name="p">The Data.Profile class that gets implicitly converted to a Domain.SystemManager.Profile class.</param>
+		private static Domain.SystemManager.Profile ConvertToDomainProfile(Data.Profile p)
 		{
 			if (p == null) { return null; }
-			return new Domain.Profile()
+			return new Domain.SystemManager.Profile()
 			{
 				Id = p.Id,
 				AspNetUserId = p.AspNetUserId,
@@ -43,7 +44,7 @@ namespace Fincific17.Services
 
 		#endregion // Utilities
 
-		public int Add(Domain.Profile newEntity)
+		public int Add(Domain.SystemManager.Profile newEntity)
 		{
 			Data.Profile newData = ConvertToDataProfile(newEntity);
 			int newDataId = 0;
@@ -57,16 +58,16 @@ namespace Fincific17.Services
 		}
 
 		/// <summary>Note: when no profile exists with the specified <paramref name="aspNetUserId"/>,
-		/// then a new Domain.Profile is returned with its AspNetUserId set to the requested aspNetUserId.
+		/// then a new Domain.SystemManager.Profile is returned with its AspNetUserId set to the requested aspNetUserId.
 		/// </summary>
 		/// <param name="aspNetUserId"></param>
 		/// <returns></returns>
-		public Domain.Profile GetProfileByAspNetUserId(string aspNetUserId)
+		public Domain.SystemManager.Profile GetProfileByAspNetUserId(string aspNetUserId)
 		{
 			using (var dc = new Data.FinancificDataContext())
 			{
 				Data.Profile profile = dc.Profiles.Where(w => w.AspNetUserId == aspNetUserId).FirstOrDefault();
-				if (profile == null) { return new Domain.Profile() { AspNetUserId = aspNetUserId }; }
+				if (profile == null) { return new Domain.SystemManager.Profile() { AspNetUserId = aspNetUserId }; }
 				return ConvertToDomainProfile(profile);
 			}
 		}
@@ -77,7 +78,7 @@ namespace Fincific17.Services
 		/// </summary>
 		/// <param name="aspNetUserId"></param>
 		/// <returns></returns>
-		public Domain.Profile GetProfileByProfileId(int profileId)
+		public Domain.SystemManager.Profile GetProfileByProfileId(int profileId)
 		{
 			using (var dc = new Data.FinancificDataContext())
 			{
@@ -86,7 +87,7 @@ namespace Fincific17.Services
 			}
 		}
 
-		public void Update(Domain.Profile entity)
+		public void Update(Domain.SystemManager.Profile entity)
 		{
 			if (entity.Id == 0) { Add(entity); return; }
 

@@ -8,9 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using Fincific17.Models;
 
-using Fincific17.Data;
 using Microsoft.AspNet.Identity;
-using Fincific17.Services;
+using Fincific.Services.SystemManager;
+using Domain = Fincific.Core.Domain;
 
 namespace Fincific17.Controllers
 {
@@ -26,7 +26,7 @@ namespace Fincific17.Controllers
 
 		#region Utility
 
-		private ProfileModel PrepareProfileModel(Domain.Profile p)
+		private ProfileModel PrepareProfileModel(Domain.SystemManager.Profile p)
 		{
 			if (p == null) { return null; }
 			return new ProfileModel()
@@ -63,7 +63,7 @@ namespace Fincific17.Controllers
 			if (ModelState.IsValid)
 			{
 				string aspNetUserId = aspNetUserId = User.Identity.GetUserId();
-				Domain.Profile p = _profileService.GetProfileByAspNetUserId(aspNetUserId);
+				Domain.SystemManager.Profile p = _profileService.GetProfileByAspNetUserId(aspNetUserId);
 				p.FirstName = model.FirstName;
 				p.NickName  = model.NickName;
 				p.LastName  = model.LastName;
