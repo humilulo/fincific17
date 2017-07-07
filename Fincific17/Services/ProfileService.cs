@@ -11,8 +11,8 @@ namespace Fincific17.Services
 	{
 		#region Utilities
 
-		/// <summary>Convert from ProfileModel to Profile.</summary>
-		/// <param name="pm">The ProfileModel that gets implicitly converted to a Profile class.</param>
+		/// <summary>Convert Domain.Profile to Data.Profile.</summary>
+		/// <param name="p">The Domain.Profile instance that is converted to a Data.Profile instance.</param>
 		private static Data.Profile ConvertToDataProfile(Domain.Profile p)
 		{
 			if (p == null) { return null; }
@@ -27,7 +27,7 @@ namespace Fincific17.Services
 		}
 
 		/// <summary>Convert from Data.Profile to Domain.Profile.</summary>
-		/// <param name="p">The Data.Profile class that gets implicitly converted to a Domain.Profile class.</param>
+		/// <param name="p">The Data.Profile instance that is converted to a Domain.Profile instance.</param>
 		private static Domain.Profile ConvertToDomainProfile(Data.Profile p)
 		{
 			if (p == null) { return null; }
