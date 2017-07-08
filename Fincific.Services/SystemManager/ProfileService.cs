@@ -27,9 +27,9 @@ namespace Fincific.Services.SystemManager
 			};
 		}
 
-		/// <summary>Convert from Data.Profile to Domain.SystemManager.Profile.</summary>
-		/// <param name="p">The Data.Profile class that gets implicitly converted to a Domain.SystemManager.Profile class.</param>
-		private static Domain.SystemManager.Profile ConvertToDomainProfile(Data.Profile p)
+		/// <summary>Convert from Data.Profile to Domain.Profile.</summary>
+		/// <param name="p">The Data.Profile class that gets implicitly converted to a Domain.Profile class.</param>
+		private static Domain.Profile ConvertToDomainProfile(Data.Profile p)
 		{
 			if (p == null) { return null; }
 			return new Domain.SystemManager.Profile()
