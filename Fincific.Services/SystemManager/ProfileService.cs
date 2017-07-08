@@ -12,8 +12,8 @@ namespace Fincific.Services.SystemManager
 	{
 		#region Utilities
 
-		/// <summary>Convert from ProfileModel to Profile.</summary>
-		/// <param name="pm">The ProfileModel that gets implicitly converted to a Profile class.</param>
+		/// <summary>Convert from Domain Profile to Data.Profile.</summary>
+		/// <param name="pm">The Domain Profile that gets converted to a Profile class.</param>
 		private static Data.Profile ConvertToDataProfile(Domain.SystemManager.Profile p)
 		{
 			if (p == null) { return null; }
@@ -28,8 +28,8 @@ namespace Fincific.Services.SystemManager
 		}
 
 		/// <summary>Convert from Data.Profile to Domain.Profile.</summary>
-		/// <param name="p">The Data.Profile class that gets implicitly converted to a Domain.Profile class.</param>
-		private static Domain.Profile ConvertToDomainProfile(Data.Profile p)
+		/// <param name="p">The Data.Profile class that gets converted to a Domain.Profile class.</param>
+		private static Domain.SystemManager.Profile ConvertToDomainProfile(Data.Profile p)
 		{
 			if (p == null) { return null; }
 			return new Domain.SystemManager.Profile()
