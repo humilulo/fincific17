@@ -17,11 +17,11 @@ namespace Fincific.Services.SystemManager
 				Id = domn.Id,
 				FiscalYear = domn.FiscalYear,
 				FiscalPeriod = domn.FiscalPeriod,
-                FromDate = domn.FromDate,
-                ThruDate = domn.ThruDate,
-                ApClosed = domn.ApClosed,
-                ArClosed = domn.ArClosed,
-                GlClosed = domn.GlClosed,
+				FromDate = domn.FromDate,
+				ThruDate = domn.ThruDate,
+				ApClosed = domn.ApClosed,
+				ArClosed = domn.ArClosed,
+				GlClosed = domn.GlClosed,
 			};
 		}
 
@@ -30,15 +30,15 @@ namespace Fincific.Services.SystemManager
 			if (data == null) { return null; }
 			return new Domain.SystemManager.PeriodConversion()
 			{
-                Id = data.Id,
-                FiscalYear = data.FiscalYear ?? 0,
-                FiscalPeriod = data.FiscalPeriod ?? 0,
-                FromDate = data.FromDate ?? (new DateTime(1900, 1, 1)),
-                ThruDate = data.ThruDate ?? (new DateTime(1900, 1, 1)),
-                ApClosed = data.ApClosed ?? true,
-                ArClosed = data.ArClosed ?? true,
-                GlClosed = data.GlClosed ?? true,
-            };
+				Id = data.Id,
+				FiscalYear = data.FiscalYear ?? 0,
+				FiscalPeriod = data.FiscalPeriod ?? 0,
+				FromDate = data.FromDate ?? (new DateTime(1900, 1, 1)),
+				ThruDate = data.ThruDate ?? (new DateTime(1900, 1, 1)),
+				ApClosed = data.ApClosed ?? true,
+				ArClosed = data.ArClosed ?? true,
+				GlClosed = data.GlClosed ?? true,
+			};
 		}
 
 		public List<Domain.SystemManager.PeriodConversion> GetAll()
@@ -49,24 +49,23 @@ namespace Fincific.Services.SystemManager
 			}
 		}
 
-        public List<int> GetAvailableYears()
-        {
-            using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
-            {
-                return dc.SmPeriodConversions.Select(s=>s.FiscalYear ?? 0).Distinct().ToList();
-            }
-        }
+		public List<int> GetAvailableYears()
+		{
+			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
+			{
+				return dc.SmPeriodConversions.Select(s=>s.FiscalYear ?? 0).Distinct().ToList();
+			}
+		}
 
-        public IEnumerable<Domain.SystemManager.PeriodConversion> GetPeriodConversionByYear(int fiscalYear)
-        {
-            using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
-            {
-                return dc.SmPeriodConversions.Where(w => w.FiscalYear == fiscalYear).Select(ConvertToDomainPeriodConversion);
-          }
-        }
+		public IEnumerable<Domain.SystemManager.PeriodConversion> GetPeriodConversionsByYear(int fiscalYear)
+		{
+			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
+			{
+				return dc.SmPeriodConversions.Where(w => w.FiscalYear == fiscalYear).Select(ConvertToDomainPeriodConversion);
+			}
+		}
 
-
-        public Domain.SystemManager.PeriodConversion GetPeriodConversionById(int id)
+		public Domain.SystemManager.PeriodConversion GetPeriodConversionById(int id)
 		{
 			if (id == 0) { return null; }
 			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
@@ -97,15 +96,15 @@ namespace Fincific.Services.SystemManager
 				Data.SmPeriodConversion u = dc.SmPeriodConversions.Where(w => w.Id == entity.Id).FirstOrDefault();
 				u.FiscalYear = entity.FiscalYear;
 				u.FiscalPeriod = entity.FiscalPeriod;
-                u.FromDate = entity.FromDate;
-                u.ThruDate = entity.ThruDate;
-                u.ApClosed = entity.ApClosed;
-                u.ArClosed = entity.ArClosed;
-                u.GlClosed = entity.GlClosed;
-                dc.SubmitChanges();
+				u.FromDate = entity.FromDate;
+				u.ThruDate = entity.ThruDate;
+				u.ApClosed = entity.ApClosed;
+				u.ArClosed = entity.ArClosed;
+				u.GlClosed = entity.GlClosed;
+				dc.SubmitChanges();
 			}
 		}
 
-	} // public class GlAccountService
+	} // public class SystemService
 
 } // namespace Fincific17.Services
