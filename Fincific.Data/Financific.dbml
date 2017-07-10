@@ -27,19 +27,6 @@
       <Association Name="AspNetUser_Profile" Member="AspNetUser" ThisKey="AspNetUserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.GlAccount" Member="GlAccounts">
-    <Type Name="GlAccount">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Number" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="AccountTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BalanceTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ConsolidateToAccountId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="GlAccount_GlAccount" Member="GlAccounts" ThisKey="Id" OtherKey="ConsolidateToAccountId" Type="GlAccount" />
-      <Association Name="GlAccount_GlAccountDetail" Member="GlAccountDetails" ThisKey="Id" OtherKey="GlAccountId" Type="GlAccountDetail" />
-      <Association Name="GlAccount_GlAccount" Member="GlAccount1" ThisKey="ConsolidateToAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.GlAccountDetail" Member="GlAccountDetails">
     <Type Name="GlAccountDetail">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -48,8 +35,8 @@
       <Column Name="FiscalPeriod" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Actual" Type="System.Decimal" DbType="Decimal(38,19)" CanBeNull="true" />
       <Column Name="Budget" Type="System.Decimal" DbType="Decimal(38,19)" CanBeNull="true" />
-      <Association Name="GlAccount_GlAccountDetail" Member="GlAccount" ThisKey="GlAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
       <Association Name="SmPeriodConversion_GlAccountDetail" Member="SmPeriodConversion" ThisKey="FiscalYear,FiscalPeriod" OtherKey="FiscalYear,FiscalPeriod" Type="SmPeriodConversion" IsForeignKey="true" />
+      <Association Name="GlAccount_GlAccountDetail" Member="GlAccount" ThisKey="GlAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.SmPeriodConversion" Member="SmPeriodConversions">
@@ -63,6 +50,37 @@
       <Column Name="ApClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="ArClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="SmPeriodConversion_GlAccountDetail" Member="GlAccountDetails" ThisKey="FiscalYear,FiscalPeriod" OtherKey="FiscalYear,FiscalPeriod" Type="GlAccountDetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GlAccount" Member="GlAccounts">
+    <Type Name="GlAccount">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Number" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="GlAccountTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BalanceTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ConsolidateToAccountId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="GlAccount_GlAccountDetail" Member="GlAccountDetails" ThisKey="Id" OtherKey="GlAccountId" Type="GlAccountDetail" />
+      <Association Name="GlAccount_GlAccount" Member="GlAccounts" ThisKey="Id" OtherKey="ConsolidateToAccountId" Type="GlAccount" />
+      <Association Name="GlAccount_GlAccount" Member="GlAccount1" ThisKey="ConsolidateToAccountId" OtherKey="Id" Type="GlAccount" IsForeignKey="true" />
+      <Association Name="GlAccountType_GlAccount" Member="GlAccountType" ThisKey="GlAccountTypeId" OtherKey="Id" Type="GlAccountType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GlAccountType" Member="GlAccountTypes">
+    <Type Name="GlAccountType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descr" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="GlAccountClassId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BalanceType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="GlAccountType_GlAccount" Member="GlAccounts" ThisKey="Id" OtherKey="GlAccountTypeId" Type="GlAccount" />
+      <Association Name="GlAccountClass_GlAccountType" Member="GlAccountClass" ThisKey="GlAccountClassId" OtherKey="Id" Type="GlAccountClass" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GlAccountClass" Member="GlAccountClasses">
+    <Type Name="GlAccountClass">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Descr" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="GlAccountClass_GlAccountType" Member="GlAccountTypes" ThisKey="Id" OtherKey="GlAccountClassId" Type="GlAccountType" />
     </Type>
   </Table>
 </Database>
