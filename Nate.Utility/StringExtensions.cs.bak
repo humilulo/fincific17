@@ -1,0 +1,136 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Nate.Utility
+{
+    public static class StringExtensions
+    {
+
+        public static string Right(this string value, int length)
+        {
+            if (value == null)
+                return "";
+
+            if (value.Length > length)
+                return value.Substring(value.Length - length);
+            else
+                return value;
+        }
+
+        private static readonly System.Text.RegularExpressions.Regex NameConvert =
+                new System.Text.RegularExpressions.Regex(@"((?<=[a-z])[A-Z]|(?<!^|\s)[A-Z][a-z])");
+
+        public static string ToDisplayFormat(this string name)
+        {
+            return string.IsNullOrEmpty(name) ?
+                System.String.Empty :
+                NameConvert.Replace(name, " $1");
+        }
+
+        public static string Left(this string value, int length)
+        {
+            if (value == null)
+                return "";
+
+            if (value.Length > length)
+                return value.Substring(0, length);
+            else
+                return value;
+        }
+
+        public static string LeftTrim(this string value, params char[] trimChars)
+        {
+            if (string.IsNullOrEmpty(value))
+                return "";
+            else
+                return value.TrimStart(trimChars);
+
+        }
+
+        public static string Token(this string value, int tokenNumber, char separator = ' ')
+        {
+            string[] sourceString = value.Split(separator);
+            if (tokenNumber < 0 || sourceString.Length <= tokenNumber)
+                return "";
+            else
+                return sourceString[tokenNumber];
+        }
+
+
+        public static string FormatToString(this string[] array, string spacer)
+        {
+            string encloseChar;
+            if (spacer.Length > 2 && spacer.Left(1) == spacer.Right(1))
+                encloseChar = spacer.Left(1);
+            else
+                encloseChar = "";
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(encloseChar);
+            for (int i = 0; i < array.Count() - 1; i++)
+            {
+                sb.Append(array[i].ToString());
+                sb.Append(spacer);
+            }
+            if (array.Count() > 0)
+            {
+                sb.Append(array[array.Count() - 1]);
+            }
+            sb.Append(encloseChar);
+            return sb.ToString();
+        }
+
+        public static bool IsNumeric(this string value)
+        {
+            return value.All(Char.IsDigit);
+        }
+
+        public static int ToInt(this string value, int defaultInt=0)
+        {
+            int result=0;
+            if (int.TryParse(value,out result))
+            {
+                return result;
+            }
+            else
+            {
+                return defaultInt;
+            }
+        }
+
+        public static string ValueDecode(this string value)
+        {
+            value = value.Replace("~1`", "/");
+            value = value.Replace("~2`", "&");
+            value = value.Replace("~3`", "\"");
+            value = value.Replace("~4`", "%");
+            value = value.Replace("~5`", "'");
+            return value;
+        }
+
+        public static string ValueEncode(this string value)
+        {
+            value = value.Replace("/", "~1`");
+            value = value.Replace("&", "~2`");
+            value = value.Replace("\"", "~3`");
+            value = value.Replace("%", "~4`");
+            value = value.Replace("'", "~5`");
+            return value;
+        }
+
+        public static string FormatToPhone(this string value)
+        {
+
+            if (value.IsNumeric() && value.Length == 10)
+            {
+                return string.Format("({0})-{1}-{2}", value.Left(3), value.Substring(3, 3), value.Right(4));
+            }
+            return value;
+
+        }
+    }
+
+}

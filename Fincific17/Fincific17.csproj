@@ -202,6 +202,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -280,7 +281,9 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\GlAccount\Index.cshtml" />
     <Content Include="Views\GlAccount\Create.cshtml" />
-    <Content Include="Views\SystemManager\PeriodConversion\ByYear.cshtml" />
+    <Content Include="Views\SystemManager\PeriodConversion\ByYear.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
