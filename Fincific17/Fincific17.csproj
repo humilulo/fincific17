@@ -192,7 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\GlAccountController.cs" />
-    <Compile Include="Controllers\SystemController.cs" />
+    <Compile Include="Controllers\PeriodConversionController.cs" />
     <Compile Include="Data\App_Start\BundleConfig.cs" />
     <Compile Include="Data\App_Start\FilterConfig.cs" />
     <Compile Include="Data\App_Start\IdentityConfig.cs" />
@@ -280,10 +280,10 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\GlAccount\Index.cshtml" />
     <Content Include="Views\GlAccount\Create.cshtml" />
+    <Content Include="Views\PeriodConversion\ByYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\System\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

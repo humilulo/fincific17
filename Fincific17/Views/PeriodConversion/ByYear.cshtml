@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Fincific17.Models.PeriodConversionModel>
+
+@{
+    ViewBag.Title = "ByYear";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ByYear</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FiscalYear)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FiscalPeriod)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FromDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ThruDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GlClosed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ApClosed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ArClosed)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FiscalYear)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FiscalPeriod)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FromDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ThruDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GlClosed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApClosed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ArClosed)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

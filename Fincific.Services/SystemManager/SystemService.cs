@@ -7,7 +7,7 @@ using Domain = Fincific.Core.Domain;
 
 namespace Fincific.Services.SystemManager
 {
-	public class SystemService
+	public class PeriodConversionService
 	{
 		private Data.SmPeriodConversion ConvertToDataPeriodConversion(Domain.SystemManager.PeriodConversion domn)
 		{
