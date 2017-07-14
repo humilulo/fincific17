@@ -15,7 +15,7 @@ namespace Fincific.Services.GeneralLedger
 		/// </summary>
 		/// <param name="domn">domn = DOMaiN</param>
 		/// <returns></returns>
-		private Data.GlAccount ConvertToDataGlAccount(Domain.GeneralLedger.GlAccount domn)
+		private Data.GlAccount ConvertToData(Domain.GeneralLedger.GlAccount domn)
 		{
 			if (domn == null) { return null; }
 			return new Data.GlAccount()
@@ -23,14 +23,35 @@ namespace Fincific.Services.GeneralLedger
 				Id = domn.Id,
 				Number = domn.Number,
 				Description = domn.Description,
-				AccountTypeId = (int)domn.AccountType,
+                GlAccountTypeId = domn.AccountType.Id,
 				BalanceTypeId = (int)domn.BalanceType,
 				ConsolidateToAccountId = (domn.ConsolToAccount == null) ? 0 : domn.ConsolToAccount.Id
 				// TODO: Is this the same?		= domn.ConsolToAccount?.Id
 			};
 		}
 
-		private Domain.GeneralLedger.GlAccount ConvertToDomainGlAccount(Data.GlAccount data)
+        private Domain.GeneralLedger.GlAccountClass ConvertToDomain(Data.GlAccountClass data)
+        {
+            if (data == null) { return null; }
+            return new Domain.GeneralLedger.GlAccountClass()
+            {
+                Id = data.Id,
+                Descr = data.Descr
+            };
+        }
+        private Domain.GeneralLedger.GlAccountType ConvertToDomain(Data.GlAccountType data)
+        {
+            if (data == null) { return null; }
+            return new Domain.GeneralLedger.GlAccountType()
+            {
+                Id = data.Id,
+                Descr = data.Descr,
+                GlAccountClass = this.ConvertToDomain(data.GlAccountClass),
+                BalanceType = (Domain.GeneralLedger.BalanceType)data.BalanceType,
+            };
+        }
+
+        private Domain.GeneralLedger.GlAccount ConvertToDomain(Data.GlAccount data)
 		{
 			if (data == null) { return null; }
 			return new Domain.GeneralLedger.GlAccount()
@@ -38,7 +59,7 @@ namespace Fincific.Services.GeneralLedger
 				Id = data.Id,
 				Number = data.Number,
 				Description = data.Description,
-				AccountType = (Domain.GeneralLedger.AccountType)data.AccountTypeId,
+				AccountType = ConvertToDomain(data.GlAccountType),
 				BalanceType = (Domain.GeneralLedger.BalanceType)data.BalanceTypeId,
 				ConsolToAccount = GetGlAccountById(data.ConsolidateToAccountId ?? 0),
 			};
@@ -48,7 +69,7 @@ namespace Fincific.Services.GeneralLedger
 		{
 			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
 			{
-				return dc.GlAccounts.Select(ConvertToDomainGlAccount).ToList();
+				return dc.GlAccounts.Select(ConvertToDomain).ToList();
 			}
 		}
 
@@ -57,13 +78,20 @@ namespace Fincific.Services.GeneralLedger
 			if (id == 0) { return null; }
 			using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
 			{
-				return ConvertToDomainGlAccount(dc.GlAccounts.Where(w => w.Id == id).FirstOrDefault());
+				return ConvertToDomain(dc.GlAccounts.Where(w => w.Id == id).FirstOrDefault());
 			}
 		}
-
-		public int Add(Domain.GeneralLedger.GlAccount newEntity)
+        public Domain.GeneralLedger.GlAccountType GetGlAccountTypeById(int id)
+        {
+            if (id == 0) { return null; }
+            using (Data.FinancificDataContext dc = new Data.FinancificDataContext())
+            {
+                return ConvertToDomain(dc.GlAccountTypes.Where(w => w.Id == id).FirstOrDefault());
+            }
+        }
+        public int Add(Domain.GeneralLedger.GlAccount newEntity)
 		{
-			Data.GlAccount newData = ConvertToDataGlAccount(newEntity);
+			Data.GlAccount newData = ConvertToData(newEntity);
 			int newDataId = 0;
 			using (var dc = new Data.FinancificDataContext())
 			{
@@ -83,7 +111,7 @@ namespace Fincific.Services.GeneralLedger
 				Data.GlAccount u = dc.GlAccounts.Where(w => w.Id == entity.Id).FirstOrDefault();
 				u.Number = entity.Number;
 				u.Description = entity.Description;
-				u.AccountTypeId = (int)entity.AccountType;
+				u.GlAccountTypeId = entity.AccountType.Id;
 				u.BalanceTypeId = (int)entity.BalanceType;
 				u.ConsolidateToAccountId =
 					(entity.ConsolToAccount != null) ? (int?)entity.ConsolToAccount.Id : null;

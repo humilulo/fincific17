@@ -9,7 +9,7 @@ namespace Fincific.Core.Domain.GeneralLedger
 	{
 		public string Number { get; set; }
 		public string Description { get; set; }
-		public AccountType AccountType { get; set; }
+		public GlAccountType AccountType { get; set; }
 		public BalanceType BalanceType { get; set; }
 		public GlAccount ConsolToAccount { get; set; }
 

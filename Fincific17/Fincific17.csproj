@@ -280,7 +280,7 @@
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\GlAccount\Index.cshtml" />
     <Content Include="Views\GlAccount\Create.cshtml" />
-    <Content Include="Views\PeriodConversion\ByYear.cshtml" />
+    <Content Include="Views\SystemManager\PeriodConversion\ByYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -13,11 +13,11 @@ namespace Fincific17.Controllers
 {
     public class PeriodConversionController : Controller
     {
-        SystemService _periodConversionService;
+        PeriodConversionService _periodConversionService;
 
         public PeriodConversionController()
         {
-            _periodConversionService = new SystemService();
+            _periodConversionService = new PeriodConversionService();
         }
 
         #region Utilities
@@ -27,7 +27,7 @@ namespace Fincific17.Controllers
             {
                 AvailableYears = _periodConversionService.GetAvailableYears(),
                 FilterYear = filterYear,
-                PeriodConversionList = _periodConversionService.GetPeriodConversionByYear(filterYear).Select(PreparePeriodConversionModel).ToList(),
+                PeriodConversionList = _periodConversionService.GetPeriodConversionsByYear(filterYear).Select(PreparePeriodConversionModel).ToList(),
             };
             return model;
         }
@@ -59,7 +59,7 @@ namespace Fincific17.Controllers
         public ActionResult ByYear(int fiscalYear)
         {
             PeriodConversionListModel model = PreparePeriodConversionListModel(fiscalYear);
-            return View(model);
+            return View("SystemManager.PeriodConversion.ByYear",model);
         }
 
         // GET: System/Details/5

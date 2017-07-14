@@ -43,6 +43,7 @@
     <Compile Include="Domain\GeneralLedger\AccountType.cs" />
     <Compile Include="Domain\GeneralLedger\BalanceType.cs" />
     <Compile Include="Domain\GeneralLedger\GlAccount.cs" />
+    <Compile Include="Domain\GeneralLedger\GlAccountClass.cs" />
     <Compile Include="Domain\SystemManager\PeriodConversion.cs" />
     <Compile Include="Domain\SystemManager\Profile.cs" />
     <Compile Include="BaseEntity.cs" />

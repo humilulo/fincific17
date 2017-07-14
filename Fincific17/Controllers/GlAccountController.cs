@@ -37,7 +37,7 @@ namespace Fincific17.Controllers
 			int accountTypeId;
 			if (int.TryParse(collection["AccountType"], out accountTypeId))
 			{
-				r.AccountType = (Domain.GeneralLedger.AccountType)accountTypeId;
+				r.AccountType = _glAccountService.GetGlAccountTypeById(accountTypeId);
 			}
 
 			int balanceTypeId;
@@ -66,15 +66,37 @@ namespace Fincific17.Controllers
 				Id = glAccount.Id,
 				Number = glAccount.Number,
 				Description = glAccount.Description,
-				AccountType = (GlAccountModel.AccountTypeModel)glAccount.AccountType,
-				BalanceType = (GlAccountModel.BalanceTypeModel)glAccount.BalanceType,
+				AccountType = PrepareGlAccountTypeModel(glAccount.AccountType),
+				BalanceType = (BalanceTypeModel)glAccount.BalanceType,
 				ConsolToAccount = PrepareGlAccountModel(glAccount.ConsolToAccount),
 			};
 		}
-		#endregion
 
-		// GET: GlAccount
-		public ActionResult Index()
+        private GlAccountTypeModel PrepareGlAccountTypeModel(Domain.GeneralLedger.GlAccountType glAccountType)
+        {
+            if (glAccountType == null) { return null; }
+            return new GlAccountTypeModel()
+            {
+                Id = glAccountType.Id,
+                Descr = glAccountType.Descr,
+                GlAccountClass = PrepareGlAccountClassModel(glAccountType.GlAccountClass),
+                BalanceType = (BalanceTypeModel)glAccountType.BalanceType,
+            };
+        }
+
+        private GlAccountClassModel PrepareGlAccountClassModel(Domain.GeneralLedger.GlAccountClass glAccountClass)
+        {
+            if (glAccountClass == null) { return null; }
+            return new GlAccountClassModel()
+            {
+                Id = glAccountClass.Id,
+                Descr = glAccountClass.Descr,
+            };
+        }
+        #endregion
+
+        // GET: GlAccount
+        public ActionResult Index()
         {
 			GlAccountListModel model = PrepareGlAccountListModel(_glAccountService.GetAll());
             return View(model);

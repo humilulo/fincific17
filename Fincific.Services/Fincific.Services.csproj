@@ -44,7 +44,7 @@
     <Compile Include="GeneralLedger\GlAccountService.cs" />
     <Compile Include="SystemManager\ProfileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemManager\SystemService.cs" />
+    <Compile Include="SystemManager\PeriodConversionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fincific.Core\Fincific.Core.csproj">
